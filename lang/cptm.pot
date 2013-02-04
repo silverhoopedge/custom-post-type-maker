@@ -1,0 +1,470 @@
+# Copyright (C) 2013 Custom Post Type Maker
+# This file is distributed under the same license as the Custom Post Type Maker package.
+msgid ""
+msgstr ""
+"Project-Id-Version: Custom Post Type Maker 0.0.1\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/custom-post-type-maker\n"
+"POT-Creation-Date: 2013-02-04 17:06:26+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2013-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+
+#. #-#-#-#-#  plugin.pot (Custom Post Type Maker 0.0.1)  #-#-#-#-#
+#. Plugin Name of the plugin/theme
+#: custom-post-type-maker.php:52 custom-post-type-maker.php:874
+msgid "Custom Post Type Maker"
+msgstr ""
+
+#: custom-post-type-maker.php:53
+msgid "Custom Post Type"
+msgstr ""
+
+#: custom-post-type-maker.php:54 custom-post-type-maker.php:83
+#: custom-post-type-maker.php:208
+msgid "Add New"
+msgstr ""
+
+#: custom-post-type-maker.php:55
+msgid "Add New Custom Post Type"
+msgstr ""
+
+#: custom-post-type-maker.php:56
+msgid "Edit Custom Post Type"
+msgstr ""
+
+#: custom-post-type-maker.php:57
+msgid "New Custom Post Type"
+msgstr ""
+
+#: custom-post-type-maker.php:58
+msgid "View Custom Post Type"
+msgstr ""
+
+#: custom-post-type-maker.php:59
+msgid "Search Custom Post Types"
+msgstr ""
+
+#: custom-post-type-maker.php:60
+msgid "No Custom Post Types found"
+msgstr ""
+
+#: custom-post-type-maker.php:61
+msgid "No Custom Post Types found in Trash"
+msgstr ""
+
+#: custom-post-type-maker.php:81
+msgid "Custom Taxonomies"
+msgstr ""
+
+#: custom-post-type-maker.php:82
+msgid "Custom Taxonomy"
+msgstr ""
+
+#: custom-post-type-maker.php:84
+msgid "Add New Custom Taxonomy"
+msgstr ""
+
+#: custom-post-type-maker.php:85
+msgid "Edit Custom Taxonomy"
+msgstr ""
+
+#: custom-post-type-maker.php:86
+msgid "New Custom Taxonomy"
+msgstr ""
+
+#: custom-post-type-maker.php:87
+msgid "View Custom Taxonomy"
+msgstr ""
+
+#: custom-post-type-maker.php:88
+msgid "Search Custom Taxonomies"
+msgstr ""
+
+#: custom-post-type-maker.php:89
+msgid "No Custom Taxonomies found"
+msgstr ""
+
+#: custom-post-type-maker.php:90
+msgid "No Custom Taxonomies found in Trash"
+msgstr ""
+
+#: custom-post-type-maker.php:113
+msgid "CPT Maker"
+msgstr ""
+
+#: custom-post-type-maker.php:113 custom-post-type-maker.php:722
+msgid "Post Types"
+msgstr ""
+
+#: custom-post-type-maker.php:114
+msgid "Taxonomies"
+msgstr ""
+
+#: custom-post-type-maker.php:330 custom-post-type-maker.php:338
+msgid "Options"
+msgstr ""
+
+#: custom-post-type-maker.php:395 custom-post-type-maker.php:832
+msgid "Custom Post Type Name"
+msgstr ""
+
+#: custom-post-type-maker.php:396
+msgid ""
+"The post type name. Used to retrieve custom post type content. Must be all "
+"in lower-case and without any spaces."
+msgstr ""
+
+#: custom-post-type-maker.php:397 custom-post-type-maker.php:636
+msgid "e.g. movies"
+msgstr ""
+
+#: custom-post-type-maker.php:405 custom-post-type-maker.php:644
+#: custom-post-type-maker.php:833
+msgid "Label"
+msgstr ""
+
+#: custom-post-type-maker.php:406
+msgid "A plural descriptive name for the post type."
+msgstr ""
+
+#: custom-post-type-maker.php:407 custom-post-type-maker.php:646
+msgid "e.g. Movies"
+msgstr ""
+
+#: custom-post-type-maker.php:415 custom-post-type-maker.php:654
+msgid "Singular Name"
+msgstr ""
+
+#: custom-post-type-maker.php:416
+msgid "A singular descriptive name for the post type."
+msgstr ""
+
+#: custom-post-type-maker.php:417 custom-post-type-maker.php:656
+msgid "e.g. Movie"
+msgstr ""
+
+#: custom-post-type-maker.php:425 custom-post-type-maker.php:834
+msgid "Description"
+msgstr ""
+
+#: custom-post-type-maker.php:426
+msgid "A short descriptive summary of what the post type is."
+msgstr ""
+
+#: custom-post-type-maker.php:434
+msgid "Public"
+msgstr ""
+
+#: custom-post-type-maker.php:435
+msgid ""
+"Whether a post type is intended to be used publicly either via the admin "
+"interface or by front-end users."
+msgstr ""
+
+#: custom-post-type-maker.php:439 custom-post-type-maker.php:451
+#: custom-post-type-maker.php:464 custom-post-type-maker.php:476
+#: custom-post-type-maker.php:500 custom-post-type-maker.php:511
+#: custom-post-type-maker.php:533 custom-post-type-maker.php:554
+#: custom-post-type-maker.php:669 custom-post-type-maker.php:682
+#: custom-post-type-maker.php:693 custom-post-type-maker.php:715
+msgid "True"
+msgstr ""
+
+#: custom-post-type-maker.php:439 custom-post-type-maker.php:451
+#: custom-post-type-maker.php:463 custom-post-type-maker.php:475
+#: custom-post-type-maker.php:487 custom-post-type-maker.php:499
+#: custom-post-type-maker.php:511 custom-post-type-maker.php:533
+#: custom-post-type-maker.php:554 custom-post-type-maker.php:565
+#: custom-post-type-maker.php:566 custom-post-type-maker.php:567
+#: custom-post-type-maker.php:669 custom-post-type-maker.php:681
+#: custom-post-type-maker.php:693 custom-post-type-maker.php:715
+msgid "default"
+msgstr ""
+
+#: custom-post-type-maker.php:440 custom-post-type-maker.php:452
+#: custom-post-type-maker.php:463 custom-post-type-maker.php:475
+#: custom-post-type-maker.php:499 custom-post-type-maker.php:512
+#: custom-post-type-maker.php:534 custom-post-type-maker.php:555
+#: custom-post-type-maker.php:670 custom-post-type-maker.php:681
+#: custom-post-type-maker.php:694 custom-post-type-maker.php:716
+msgid "False"
+msgstr ""
+
+#: custom-post-type-maker.php:446 custom-post-type-maker.php:664
+msgid "Show UI"
+msgstr ""
+
+#: custom-post-type-maker.php:447
+msgid ""
+"Whether to generate a default UI for managing this post type in the admin."
+msgstr ""
+
+#: custom-post-type-maker.php:458
+msgid "Has Archive"
+msgstr ""
+
+#: custom-post-type-maker.php:459
+msgid "Enables post type archives."
+msgstr ""
+
+#: custom-post-type-maker.php:470
+msgid "Exclude From Search"
+msgstr ""
+
+#: custom-post-type-maker.php:471
+msgid ""
+"Whether to exclude posts with this post type from front end search results."
+msgstr ""
+
+#: custom-post-type-maker.php:482
+msgid "Capability Type"
+msgstr ""
+
+#: custom-post-type-maker.php:483
+msgid "The post type to use to build the read, edit, and delete capabilities."
+msgstr ""
+
+#: custom-post-type-maker.php:487
+msgid "Post"
+msgstr ""
+
+#: custom-post-type-maker.php:488
+msgid "Page"
+msgstr ""
+
+#: custom-post-type-maker.php:494 custom-post-type-maker.php:676
+msgid "Hierarchical"
+msgstr ""
+
+#: custom-post-type-maker.php:495
+msgid "Whether the post type is hierarchical (e.g. page)."
+msgstr ""
+
+#: custom-post-type-maker.php:506 custom-post-type-maker.php:688
+msgid "Rewrite"
+msgstr ""
+
+#: custom-post-type-maker.php:507
+msgid "Triggers the handling of rewrites for this post type."
+msgstr ""
+
+#: custom-post-type-maker.php:518 custom-post-type-maker.php:700
+msgid "Custom Rewrite Slug"
+msgstr ""
+
+#: custom-post-type-maker.php:519 custom-post-type-maker.php:701
+msgid "Customize the permastruct slug."
+msgstr ""
+
+#: custom-post-type-maker.php:520
+msgid "Default: [Custom Post Type Name]"
+msgstr ""
+
+#: custom-post-type-maker.php:528 custom-post-type-maker.php:710
+msgid "Query Var"
+msgstr ""
+
+#: custom-post-type-maker.php:529
+msgid "Sets the query_var key for this post type."
+msgstr ""
+
+#: custom-post-type-maker.php:540
+msgid "Menu Position"
+msgstr ""
+
+#: custom-post-type-maker.php:541
+msgid ""
+"The position in the menu order the post type should appear. \"Show in Menu\" "
+"must be true."
+msgstr ""
+
+#: custom-post-type-maker.php:549
+msgid "Show in Menu"
+msgstr ""
+
+#: custom-post-type-maker.php:550
+msgid ""
+"Where to show the post type in the admin menu. \"Show UI\" must be true."
+msgstr ""
+
+#: custom-post-type-maker.php:561
+msgid "Supports"
+msgstr ""
+
+#: custom-post-type-maker.php:562
+msgid ""
+"Adds the respective meta boxes when creating content for this Custom Post "
+"Type."
+msgstr ""
+
+#: custom-post-type-maker.php:565
+msgid "Title"
+msgstr ""
+
+#: custom-post-type-maker.php:566
+msgid "Editor"
+msgstr ""
+
+#: custom-post-type-maker.php:567
+msgid "Excerpt"
+msgstr ""
+
+#: custom-post-type-maker.php:568
+msgid "Trackbacks"
+msgstr ""
+
+#: custom-post-type-maker.php:569
+msgid "Custom Fields"
+msgstr ""
+
+#: custom-post-type-maker.php:570
+msgid "Comments"
+msgstr ""
+
+#: custom-post-type-maker.php:571
+msgid "Revisions"
+msgstr ""
+
+#: custom-post-type-maker.php:572
+msgid "Featured Image"
+msgstr ""
+
+#: custom-post-type-maker.php:573
+msgid "Author"
+msgstr ""
+
+#: custom-post-type-maker.php:574
+msgid "Page Attributes"
+msgstr ""
+
+#: custom-post-type-maker.php:575
+msgid "Post Formats"
+msgstr ""
+
+#: custom-post-type-maker.php:580
+msgid "Built-in Taxonomies"
+msgstr ""
+
+#: custom-post-type-maker.php:584
+msgid "Categories"
+msgstr ""
+
+#: custom-post-type-maker.php:585
+msgid "Tags"
+msgstr ""
+
+#: custom-post-type-maker.php:634
+msgid "Custom Taxonomy Name"
+msgstr ""
+
+#: custom-post-type-maker.php:635
+msgid "The taxonomy name. Used to retrieve custom taxonomy content."
+msgstr ""
+
+#: custom-post-type-maker.php:645
+msgid "A plural descriptive name for the taxonomy."
+msgstr ""
+
+#: custom-post-type-maker.php:655
+msgid "A singular descriptive name for the taxonomy."
+msgstr ""
+
+#: custom-post-type-maker.php:665
+msgid ""
+"Whether to generate a default UI for managing this taxonomy in the admin."
+msgstr ""
+
+#: custom-post-type-maker.php:677
+msgid "Whether the taxonomy is hierarchical (e.g. page)."
+msgstr ""
+
+#: custom-post-type-maker.php:689
+msgid "Triggers the handling of rewrites for this taxonomy."
+msgstr ""
+
+#: custom-post-type-maker.php:702
+msgid "Default: [Custom Taxonomy Name]"
+msgstr ""
+
+#: custom-post-type-maker.php:711
+msgid "Sets the query_var key for this taxonomy."
+msgstr ""
+
+#: custom-post-type-maker.php:726
+msgid "Posts"
+msgstr ""
+
+#: custom-post-type-maker.php:727
+msgid "Pages"
+msgstr ""
+
+#: custom-post-type-maker.php:831
+msgid "Post Type"
+msgstr ""
+
+#: custom-post-type-maker.php:875
+msgid "Version"
+msgstr ""
+
+#: custom-post-type-maker.php:879
+msgid "Created by"
+msgstr ""
+
+#: custom-post-type-maker.php:882
+msgid "Vote"
+msgstr ""
+
+#: custom-post-type-maker.php:897 custom-post-type-maker.php:898
+#: custom-post-type-maker.php:900
+msgid "Custom Post Type updated."
+msgstr ""
+
+#: custom-post-type-maker.php:899
+msgid "Custom Post Type deleted."
+msgstr ""
+
+#. translators: %s: date and time of the revision
+#: custom-post-type-maker.php:902
+msgid "Custom Post Type restored to revision from %s"
+msgstr ""
+
+#: custom-post-type-maker.php:903
+msgid "Custom Post Type published."
+msgstr ""
+
+#: custom-post-type-maker.php:904
+msgid "Custom Post Type saved."
+msgstr ""
+
+#: custom-post-type-maker.php:905
+msgid "Custom Post Type submitted."
+msgstr ""
+
+#: custom-post-type-maker.php:906
+msgid "Custom Post Type scheduled for."
+msgstr ""
+
+#: custom-post-type-maker.php:907
+msgid "Custom Post Type draft updated."
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "http://www.bakhuys.com/wordpress/plugin/custom-post-type-maker/"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid ""
+"Custom Post Type Maker lets you create Custom Post Types and custom "
+"Taxonomies in a user friendly way."
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "Jorn Bakhuys"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "http://www.bakhuys.com/"
+msgstr ""
