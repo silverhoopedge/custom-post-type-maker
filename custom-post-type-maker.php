@@ -872,7 +872,7 @@ class Cptm {
 			<div class="wp-box">
 				<div class="inner">
 					<h2><?php _e( 'Custom Post Type Maker', 'cptm' ); ?></h2>
-					<p>Version <?php echo $this->version; ?></p>
+					<p><?php _e( 'Version', 'cptm' ); ?> <?php echo $this->version; ?></p>
 				</div>
 				<div class="footer footer-blue">
 					<ul class="left">
