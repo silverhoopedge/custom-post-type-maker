@@ -4,7 +4,7 @@ Plugin Name: Custom Post Type Maker
 Plugin URI: http://www.bakhuys.com/wordpress/plugin/custom-post-type-maker/
 Description: Custom Post Type Maker lets you create Custom Post Types and custom Taxonomies in a user friendly way.
 Author: Jorn Bakhuys
-Version: 0.0.2
+Version: 0.0.3
 Author URI: http://www.bakhuys.com/
 */
 
@@ -23,7 +23,7 @@ class Cptm {
 		// vars
 		$this->dir = plugins_url( '', __FILE__ );
 		$this->path = plugin_dir_path( __FILE__ );
-		$this->version = '0.0.2';
+		$this->version = '0.0.3';
 
 		// actions
 		add_action( 'init', array($this, 'init') );
@@ -728,6 +728,15 @@ class Cptm {
 				<td>
 					<input type="checkbox" name="cptm_tax_post_types[]" id="cptm_tax_post_types_post" value="post" <?php checked( $cptm_tax_post_types_post, 'post' ); ?> /> <label for="cptm_tax_post_types_post"><?php _e( 'Posts', 'cptm' ); ?></label><br />
 					<input type="checkbox" name="cptm_tax_post_types[]" id="cptm_tax_post_types_page" value="page" <?php checked( $cptm_tax_post_types_page, 'page' ); ?> /> <label for="cptm_tax_post_types_page"><?php _e( 'Pages', 'cptm' ); ?></label><br />
+					<?php
+						$post_types = get_post_types( array( 'public'   => true, '_builtin' => false ) );
+						foreach ($post_types as $post_type ) {
+							$checked = in_array( $post_type, $cptm_tax_post_types )  ? 'checked="checked"' : '';
+							?>
+							<input type="checkbox" name="cptm_tax_post_types[]" id="cptm_tax_post_types_<?php echo $post_type; ?>" value="<?php echo $post_type; ?>" <?php echo $checked; ?> /> <label for="cptm_tax_post_types_<?php echo $post_type; ?>"><?php echo ucfirst( $post_type ); ?></label><br />
+							<?php
+						}
+					?>
 				</td>
 			</tr>
 		</table>
@@ -917,7 +926,7 @@ class Cptm {
 						<li><?php _e("Created by",'cptm' ); ?> <a href="http://www.bakhuys.com" target="_blank" title="Bakhuys Interactive Media">Jorn Bakhuys</a></li>
 					</ul>
 					<ul class="right">
-						<li><a href="http://wordpress.org/extend/plugins/custom-post-type-maker/"><?php _e( 'Vote', 'cptm' ); ?></a></li>
+						<li><a href="http://wordpress.org/extend/plugins/custom-post-type-maker/" target="_blank"><?php _e( 'Vote', 'cptm' ); ?></a></li>
 					</ul>
 				</div>
 			</div>
