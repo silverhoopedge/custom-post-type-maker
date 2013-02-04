@@ -23,7 +23,7 @@ Custom Post Type Maker is the perfect plugin to create Custom Post Types and cus
 
 = I have a question =
 
-Please ask this question in the [Support Forums][http://wordpress.org/support/plugin/custom-post-type-maker].
+Please ask this question in the [Support Forums](http://wordpress.org/support/plugin/custom-post-type-maker]).
 
 == Screenshots ==
 
