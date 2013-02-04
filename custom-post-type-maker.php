@@ -4,7 +4,7 @@ Plugin Name: Custom Post Type Maker
 Plugin URI: http://www.bakhuys.com/wordpress/plugin/custom-post-type-maker/
 Description: Custom Post Type Maker lets you create Custom Post Types and custom Taxonomies in a user friendly way.
 Author: Jorn Bakhuys
-Version: 0.0.1
+Version: 0.0.2
 Author URI: http://www.bakhuys.com/
 */
 
@@ -23,7 +23,7 @@ class Cptm {
 		// vars
 		$this->dir = plugins_url( '', __FILE__ );
 		$this->path = plugin_dir_path( __FILE__ );
-		$this->version = '0.0.1';
+		$this->version = '0.0.2';
 
 		// actions
 		add_action( 'init', array($this, 'init') );
@@ -33,11 +33,14 @@ class Cptm {
 		add_action( 'add_meta_boxes', array($this, 'cptm_create_meta_boxes') );
 		add_action( 'save_post', array($this, 'cptm_save_post') );
 		add_action( 'manage_posts_custom_column', array($this, 'cptm_custom_columns'), 10, 2 );
+		add_action( 'manage_posts_custom_column', array($this, 'cptm_tax_custom_columns'), 10, 2 );
 		add_action( 'admin_footer', array($this,'cptm_admin_footer') );
 
 		// filters
 		add_filter( 'manage_cptm_posts_columns', array($this, 'cptm_change_columns') );
 		add_filter( 'manage_edit-cptm_sortable_columns', array($this, 'cptm_sortable_columns') );
+		add_filter( 'manage_cptm_tax_posts_columns', array($this, 'cptm_tax_change_columns') );
+		add_filter( 'manage_edit-cptm_tax_sortable_columns', array($this, 'cptm_tax_sortable_columns') );
 		add_filter( 'post_updated_messages', array($this, 'cptm_post_updated_messages') );
 
 		// set textdomain
@@ -863,6 +866,41 @@ class Cptm {
 		}
 
 	} // # function cptm_custom_columns()
+
+	function cptm_tax_change_columns( $cols ) {
+
+		$cols = array(
+			'cb'                    => '<input type="checkbox" />',
+			'title'                 => __( 'Taxonomy', 'cptm' ),
+			'custom_post_type_name' => __( 'Custom Taxonomy Name', 'cptm' ),
+			'label'                 => __( 'Label', 'cptm' )
+		);
+		return $cols;
+
+	} // # function cptm_tax_change_columns()
+
+	function cptm_tax_sortable_columns() {
+
+		return array(
+			'title'                 => 'title',
+			'custom_post_type_name' => 'custom_post_type_name',
+			'label'                 => 'label'
+		);
+
+	} // # function cptm_tax_sortable_columns()
+
+	function cptm_tax_custom_columns( $column, $post_id ) {
+
+		switch ( $column ) {
+			case "custom_post_type_name":
+				echo get_post_meta( $post_id, 'cptm_tax_name', true);
+				break;
+			case "label":
+				echo get_post_meta( $post_id, 'cptm_tax_label', true);
+				break;
+		}
+
+	} // # function cptm_tax_custom_columns()
 
 	function cptm_admin_footer() {
 
