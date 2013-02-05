@@ -4,7 +4,7 @@ Plugin Name: Custom Post Type Maker
 Plugin URI: http://www.bakhuys.com/wordpress/plugin/custom-post-type-maker/
 Description: Custom Post Type Maker lets you create Custom Post Types and custom Taxonomies in a user friendly way.
 Author: Jorn Bakhuys
-Version: 0.0.3
+Version: 0.0.4
 Author URI: http://www.bakhuys.com/
 */
 
@@ -23,7 +23,7 @@ class Cptm {
 		// vars
 		$this->dir = plugins_url( '', __FILE__ );
 		$this->path = plugin_dir_path( __FILE__ );
-		$this->version = '0.0.3';
+		$this->version = '0.0.4';
 
 		// actions
 		add_action( 'init', array($this, 'init') );
@@ -127,6 +127,9 @@ class Cptm {
 
 			wp_register_script( 'cptm_admin_js', $this->dir . '/js/overview.js', 'jquery', '0.0.1', true );
 			wp_enqueue_script( 'cptm_admin_js' );
+
+			wp_enqueue_script( array( 'jquery', 'thickbox' ) );
+			wp_enqueue_style( array( 'thickbox' ) );
 		}
 
 		// register add / edit style
@@ -589,6 +592,7 @@ class Cptm {
 				</td>
 			</tr>
 		</table>
+
 		<?php
 
 	} // # function cptm_meta_box()
@@ -729,8 +733,8 @@ class Cptm {
 					<input type="checkbox" name="cptm_tax_post_types[]" id="cptm_tax_post_types_post" value="post" <?php checked( $cptm_tax_post_types_post, 'post' ); ?> /> <label for="cptm_tax_post_types_post"><?php _e( 'Posts', 'cptm' ); ?></label><br />
 					<input type="checkbox" name="cptm_tax_post_types[]" id="cptm_tax_post_types_page" value="page" <?php checked( $cptm_tax_post_types_page, 'page' ); ?> /> <label for="cptm_tax_post_types_page"><?php _e( 'Pages', 'cptm' ); ?></label><br />
 					<?php
-						$post_types = get_post_types( array( 'public'   => true, '_builtin' => false ) );
-						foreach ($post_types as $post_type ) {
+						$post_types = get_post_types( array( 'public' => true, '_builtin' => false ) );
+						foreach ( $post_types as $post_type ) {
 							$checked = in_array( $post_type, $cptm_tax_post_types )  ? 'checked="checked"' : '';
 							?>
 							<input type="checkbox" name="cptm_tax_post_types[]" id="cptm_tax_post_types_<?php echo $post_type; ?>" value="<?php echo $post_type; ?>" <?php echo $checked; ?> /> <label for="cptm_tax_post_types_<?php echo $post_type; ?>"><?php echo ucfirst( $post_type ); ?></label><br />
@@ -852,10 +856,7 @@ class Cptm {
 	function cptm_sortable_columns() {
 
 		return array(
-			'title'                 => 'title',
-			'custom_post_type_name' => 'custom_post_type_name',
-			'label'                 => 'label',
-			'description'           => 'description'
+			'title'                 => 'title'
 		);
 
 	} // # function cptm_sortable_columns()
@@ -891,9 +892,7 @@ class Cptm {
 	function cptm_tax_sortable_columns() {
 
 		return array(
-			'title'                 => 'title',
-			'custom_post_type_name' => 'custom_post_type_name',
-			'label'                 => 'label'
+			'title'                 => 'title'
 		);
 
 	} // # function cptm_tax_sortable_columns()
@@ -913,13 +912,20 @@ class Cptm {
 
 	function cptm_admin_footer() {
 
+		global $post_type;
 		?>
 		<div id="cptm-col-right" class="hidden">
 
 			<div class="wp-box">
 				<div class="inner">
 					<h2><?php _e( 'Custom Post Type Maker', 'cptm' ); ?></h2>
-					<p><?php _e( 'Version', 'cptm' ); ?> <?php echo $this->version; ?></p>
+					<p class="version"><?php _e( 'Version', 'cptm' ); ?> <?php echo $this->version; ?></p>
+					<h3><?php _e( 'Useful links', 'cptm' ); ?></h3>
+					<ul>
+						<li><a class="thickbox" href="http://www.wp-plugins.dev/wp-admin/plugin-install.php?tab=plugin-information&plugin=custom-post-type-maker&section=changelog&TB_iframe=true&width=600&height=550"><?php _e( 'Changelog', 'cptm' ); ?></a></li>
+						<li><a href="http://wordpress.org/support/plugin/custom-post-type-maker" target="_blank"><?php _e( 'Support Forums', 'cptm' ); ?></a></li>
+						<li><a href="http://www.twitter.com/jornbakhuys" target="_blank"><?php _e( 'Direct contact (@jornbakhuys)', 'cptm' ); ?></a></li>
+					</ul>
 				</div>
 				<div class="footer footer-blue">
 					<ul class="left">
@@ -932,6 +938,192 @@ class Cptm {
 			</div>
 		</div>
 		<?php
+		if( 'cptm' == $post_type ) {
+			?>
+			<div id="cptm-cpt-overview" class="hidden">
+				<div id="icon-edit" class="icon32 icon32-posts-cptm"><br></div>
+				<h2><?php _e( 'Other registered Custom Post Types', 'cptm' ); ?></h2>
+				<p><?php _e( 'The Custom Post Types below are registered in WordPress but were not created by the Custom Post Type Maker plugin.', 'cptm' ); ?></p>
+				<table class="wp-list-table widefat fixed posts" cellspacing="0">
+					<thead>
+						<tr>
+							<th scope="col" id="cb" class="manage-column column-cb check-column">
+							</th>
+							<th scope="col" id="title" class="manage-column column-title">
+								<span><?php _e( 'Post Type', 'cptm'); ?></span><span class="sorting-indicator"></span>
+							</th>
+							<th scope="col" id="custom_post_type_name" class="manage-column column-custom_post_type_name">
+								<span><?php _e( 'Custom Post Type Name', 'cptm'); ?></span><span class="sorting-indicator"></span>
+							</th>
+							<th scope="col" id="label" class="manage-column column-label">
+								<span><?php _e( 'Label', 'cptm'); ?></span><span class="sorting-indicator"></span>
+							</th>
+							<th scope="col" id="description" class="manage-column column-description">
+								<span><?php _e( 'Description', 'cptm'); ?></span><span class="sorting-indicator"></span>
+							</th>
+						</tr>
+					</thead>
+
+					<tfoot>
+						<tr>
+							<th scope="col" class="manage-column column-cb check-column">
+							</th>
+							<th scope="col" class="manage-column column-title">
+								<span><?php _e( 'Post Type', 'cptm'); ?></span><span class="sorting-indicator"></span>
+							</th>
+							<th scope="col" class="manage-column column-custom_post_type_name">
+								<span><?php _e( 'Custom Post Type Name', 'cptm'); ?></span><span class="sorting-indicator"></span>
+							</th>
+							<th scope="col" class="manage-column column-label">
+								<span><?php _e( 'Label', 'cptm'); ?></span><span class="sorting-indicator"></span>
+							</th>
+							<th scope="col" class="manage-column column-description">
+								<span><?php _e( 'Description', 'cptm'); ?></span><span class="sorting-indicator"></span>
+							</th>
+						</tr>
+					</tfoot>
+
+					<tbody id="the-list">
+						<?php
+							// Get all public Custom Post Types
+							$post_types = get_post_types( array( 'public' => true, '_builtin' => false ), 'objects' );
+							// Get all Custom Post Types created by Custom Post Type Maker
+							$cptm_posts = get_posts( array( 'post_type' => 'cptm' ) );
+							// Remove all Custom Post Types created by the Custom Post Type Maker plugin
+							foreach ( $cptm_posts as $cptm_post ) {
+								$values = get_post_custom( $cptm_post->ID );
+								unset( $post_types[ $values['cptm_name'][0] ] );
+							}
+							// Create list of all other registered Custom Post Types
+							foreach ( $post_types as $post_type ) {
+								?>
+						<tr valign="top">
+							<th scope="row" class="check-column">
+							</th>
+							<td class="post-title page-title column-title">
+								<strong><?php echo $post_type->labels->name; ?></strong>
+							</td>
+							<td class="custom_post_type_name column-custom_post_type_name"><?php echo $post_type->name; ?></td>
+							<td class="label column-label"><?php echo $post_type->labels->name; ?></td>
+							<td class="description column-description"><?php echo $post_type->description; ?></td>
+						</tr>
+								<?php
+							}
+
+							if ( count( $post_types ) == 0 ) {
+								?>
+						<tr class="no-items"><td class="colspanchange" colspan="5"><?php _e( 'No Custom Post Types found' , 'cptm' ); ?>.</td></tr>
+								<?php
+							}
+						?>
+					</tbody>
+				</table>
+
+				<div class="tablenav bottom">
+					<div class="tablenav-pages one-page">
+						<span class="displaying-num">
+							<?php
+							$count = count( $post_types );
+							printf( _n( '%d item', '%d items', $count ), $count );
+							?>
+						</span>
+						<br class="clear">
+					</div>
+				</div>
+
+			</div>
+			<?php
+		}
+		if( 'cptm_tax' == $post_type ) {
+			?>
+			<div id="cptm-cpt-overview" class="hidden">
+				<div id="icon-edit" class="icon32 icon32-posts-cptm"><br></div>
+				<h2><?php _e( 'Other registered custom Taxonomies', 'cptm' ); ?></h2>
+				<p><?php _e( 'The custom Taxonomies below are registered in WordPress but were not created by the Custom Post Type Maker plugin.', 'cptm' ); ?></p>
+				<table class="wp-list-table widefat fixed posts" cellspacing="0">
+					<thead>
+						<tr>
+							<th scope="col" id="cb" class="manage-column column-cb check-column">
+							</th>
+							<th scope="col" id="title" class="manage-column column-title">
+								<span><?php _e( 'Taxonomy', 'cptm'); ?></span><span class="sorting-indicator"></span>
+							</th>
+							<th scope="col" id="custom_post_type_name" class="manage-column column-custom_taxonomy_name">
+								<span><?php _e( 'Custom Taxonomy Name', 'cptm'); ?></span><span class="sorting-indicator"></span>
+							</th>
+							<th scope="col" id="label" class="manage-column column-label">
+								<span><?php _e( 'Label', 'cptm'); ?></span><span class="sorting-indicator"></span>
+							</th>
+						</tr>
+					</thead>
+
+					<tfoot>
+						<tr>
+							<th scope="col" class="manage-column column-cb check-column">
+							</th>
+							<th scope="col" class="manage-column column-title">
+								<span><?php _e( 'Taxonomy', 'cptm'); ?></span><span class="sorting-indicator"></span>
+							</th>
+							<th scope="col" class="manage-column column-custom_post_type_name">
+								<span><?php _e( 'Custom Taxonomy Name', 'cptm'); ?></span><span class="sorting-indicator"></span>
+							</th>
+							<th scope="col" class="manage-column column-label">
+								<span><?php _e( 'Label', 'cptm'); ?></span><span class="sorting-indicator"></span>
+							</th>
+						</tr>
+					</tfoot>
+
+					<tbody id="the-list">
+						<?php
+							// Get all public custom Taxonomies
+							$taxonomies = get_taxonomies( array( 'public' => true, '_builtin' => false ), 'objects' );
+							// Get all custom Taxonomies created by Custom Post Type Maker
+							$cptm_tax_posts = get_posts( array( 'post_type' => 'cptm_tax' ) );
+							// Remove all custom Taxonomies created by the Custom Post Type Maker plugin
+							foreach ( $cptm_tax_posts as $cptm_tax_post ) {
+								$values = get_post_custom( $cptm_tax_post->ID );
+								unset( $taxonomies[ $values['cptm_tax_name'][0] ] );
+							}
+
+							// Create list of all other registered Custom Post Types
+							foreach ( $taxonomies as $taxonomy ) {
+								?>
+						<tr valign="top">
+							<th scope="row" class="check-column">
+							</th>
+							<td class="post-title page-title column-title">
+								<strong><?php echo $taxonomy->labels->name; ?></strong>
+							</td>
+							<td class="custom_post_type_name column-custom_post_type_name"><?php echo $taxonomy->name; ?></td>
+							<td class="label column-label"><?php echo $taxonomy->labels->name; ?></td>
+						</tr>
+								<?php
+							}
+
+							if ( count( $taxonomies ) == 0 ) {
+								?>
+						<tr class="no-items"><td class="colspanchange" colspan="4"><?php _e( 'No custom Taxonomies found' , 'cptm' ); ?>.</td></tr>
+								<?php
+							}
+						?>
+					</tbody>
+				</table>
+
+				<div class="tablenav bottom">
+					<div class="tablenav-pages one-page">
+						<span class="displaying-num">
+							<?php
+							$count = count( $taxonomies );
+							printf( _n( '%d item', '%d items', $count ), $count );
+							?>
+						</span>
+						<br class="clear">
+					</div>
+				</div>
+
+			</div>
+			<?php
+		}
 
 	} // # function cptm_admin_footer()
 
@@ -959,4 +1151,3 @@ class Cptm {
 	} // # function cptm_post_updated_messages()
 
 }
-

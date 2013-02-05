@@ -13,6 +13,13 @@ Custom Post Type Maker lets you create Custom Post Types and custom Taxonomies i
 
 Custom Post Type Maker is the perfect plugin to create Custom Post Types and custom Taxonomies in a user friendly way, just like managing your regular posts and pages.
 
+= Features =
+* Fully integrates with the Wordpress API, for the best compatibility
+* Lets you create Custom Post Types and custom Taxonomies without the need of writing any code
+* Provides an interface to manage your Custom Post Types, just like managing your regular posts and pages
+* Provides almost all the parameters of the WordPress CPT API
+* Shows you a list of all other registered Custom Post Types and custom Taxonomies in Wordpress
+
 = Bug Submission and Forum Support =
 [Support Forums](http://wordpress.org/support/plugin/custom-post-type-maker)
 
@@ -41,6 +48,12 @@ Please ask this question in the [Support Forums](http://wordpress.org/support/pl
 3. Creating custom Taxonomies
 
 == Changelog ==
+
+= 0.0.4 =
+* [Added] Show other registered Custom Post Types in overview
+* [Added] Show other registered custom Taxonomies in overview
+* [Added] Useful links in the overview page
+* [Updated] Dutch translation for [Added] features
 
 = 0.0.3 =
 * [Added] Link custom Taxonomies to Custom Post Types

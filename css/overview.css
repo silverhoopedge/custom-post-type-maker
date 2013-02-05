@@ -37,6 +37,21 @@
 		padding-top: 37px !important;
 	}
 
+		#cptm-col-right p.version {
+			font-size: 23px;
+			line-height: 29px;
+			font-family: HelveticaNeue-Light, 'Helvetica Neue Light', 'Helvetica Neue', sans-serif;
+			color: #ccc;
+			margin-top: 0;
+		}
+
+	#cptm-cpt-overview {
+		position: relative;
+		float: left;
+		padding-top: 20px;
+		width: 100%;
+	}
+
 /* wp-box */
 .wp-box {
 	border: 1px solid #e1e1e1;
