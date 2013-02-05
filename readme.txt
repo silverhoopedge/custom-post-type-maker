@@ -3,7 +3,7 @@ Contributors: jornbakhuys
 Tags: custom, post, type, custom post type, custom post types, maker, make, cpt, post types, taxonomy, taxonomies, tax, custom taxonomies
 Requires at least: 3.0.0
 Tested up to: 3.5.1
-Stable tag: 0.0.4
+Stable tag: 0.0.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -49,10 +49,13 @@ Please ask this question in the [Support Forums](http://wordpress.org/support/pl
 
 == Changelog ==
 
+= 0.0.5 =
+* [Bugfix] Fix Changelog link in Useful Links section
+
 = 0.0.4 =
 * [Added] Show other registered Custom Post Types in overview
 * [Added] Show other registered custom Taxonomies in overview
-* [Added] Useful links in the overview page
+* [Added] Useful Links in the overview page
 * [Updated] Dutch translation for [Added] features
 
 = 0.0.3 =

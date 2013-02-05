@@ -4,7 +4,7 @@ Plugin Name: Custom Post Type Maker
 Plugin URI: http://www.bakhuys.com/wordpress/plugin/custom-post-type-maker/
 Description: Custom Post Type Maker lets you create Custom Post Types and custom Taxonomies in a user friendly way.
 Author: Jorn Bakhuys
-Version: 0.0.4
+Version: 0.0.5
 Author URI: http://www.bakhuys.com/
 */
 
@@ -23,7 +23,7 @@ class Cptm {
 		// vars
 		$this->dir = plugins_url( '', __FILE__ );
 		$this->path = plugin_dir_path( __FILE__ );
-		$this->version = '0.0.4';
+		$this->version = '0.0.5';
 
 		// actions
 		add_action( 'init', array($this, 'init') );
@@ -922,7 +922,7 @@ class Cptm {
 					<p class="version"><?php _e( 'Version', 'cptm' ); ?> <?php echo $this->version; ?></p>
 					<h3><?php _e( 'Useful links', 'cptm' ); ?></h3>
 					<ul>
-						<li><a class="thickbox" href="http://www.wp-plugins.dev/wp-admin/plugin-install.php?tab=plugin-information&plugin=custom-post-type-maker&section=changelog&TB_iframe=true&width=600&height=550"><?php _e( 'Changelog', 'cptm' ); ?></a></li>
+						<li><a class="thickbox" href="<?php echo admin_url('plugin-install.php'); ?>?tab=plugin-information&plugin=custom-post-type-maker&section=changelog&TB_iframe=true&width=600&height=550"><?php _e( 'Changelog', 'cptm' ); ?></a></li>
 						<li><a href="http://wordpress.org/support/plugin/custom-post-type-maker" target="_blank"><?php _e( 'Support Forums', 'cptm' ); ?></a></li>
 						<li><a href="http://www.twitter.com/jornbakhuys" target="_blank"><?php _e( 'Direct contact (@jornbakhuys)', 'cptm' ); ?></a></li>
 					</ul>
