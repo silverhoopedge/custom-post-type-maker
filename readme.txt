@@ -3,7 +3,7 @@ Contributors: jornbakhuys
 Tags: custom, post, type, custom post type, custom post types, maker, make, cpt, post types, taxonomy, taxonomies, tax, custom taxonomies
 Requires at least: 3.0.0
 Tested up to: 3.5.1
-Stable tag: 0.0.5
+Stable tag: 0.0.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -48,6 +48,11 @@ Please ask this question in the [Support Forums](http://wordpress.org/support/pl
 3. Creating custom Taxonomies
 
 == Changelog ==
+
+= 0.0.6 =
+* [Added] Add tabindex for metaboxes
+* [Added] Only show table of other registered Custom Post Types if there actually are
+* [Added] Only show table of other registered custom Taxonomies if there actually are
 
 = 0.0.5 =
 * [Bugfix] Fix Changelog link in Useful Links section

@@ -4,7 +4,7 @@ Plugin Name: Custom Post Type Maker
 Plugin URI: http://www.bakhuys.com/wordpress/plugin/custom-post-type-maker/
 Description: Custom Post Type Maker lets you create Custom Post Types and custom Taxonomies in a user friendly way.
 Author: Jorn Bakhuys
-Version: 0.0.5
+Version: 0.0.6
 Author URI: http://www.bakhuys.com/
 */
 
@@ -23,7 +23,7 @@ class Cptm {
 		// vars
 		$this->dir = plugins_url( '', __FILE__ );
 		$this->path = plugin_dir_path( __FILE__ );
-		$this->version = '0.0.5';
+		$this->version = '0.0.6';
 
 		// actions
 		add_action( 'init', array($this, 'init') );
@@ -312,6 +312,7 @@ class Cptm {
 						);
 
 						$args = array(
+							'label'               => $cptm_taxonomy['cptm_tax_label'],
 							'labels'              => $labels,
 							'rewrite'             => $cptm_taxonomy['cptm_tax_rewrite'],
 							'show_ui'             => $cptm_taxonomy['cptm_tax_show_ui'],
@@ -403,7 +404,7 @@ class Cptm {
 					<p><?php _e( 'e.g. movies', 'cptm' ); ?></p>
 				</td>
 				<td>
-					<input type="text" name="cptm_name" id="cptm_name" class="widefat" value="<?php echo $cptm_name; ?>" />
+					<input type="text" name="cptm_name" id="cptm_name" class="widefat" tabindex="1" value="<?php echo $cptm_name; ?>" />
 				</td>
 			</tr>
 			<tr>
@@ -413,7 +414,7 @@ class Cptm {
 					<p><?php _e( 'e.g. Movies', 'cptm' ); ?></p>
 				</td>
 				<td>
-					<input type="text" name="cptm_label" id="cptm_label" class="widefat" value="<?php echo $cptm_label; ?>" />
+					<input type="text" name="cptm_label" id="cptm_label" class="widefat" tabindex="2" value="<?php echo $cptm_label; ?>" />
 				</td>
 			</tr>
 			<tr>
@@ -423,7 +424,7 @@ class Cptm {
 					<p><?php _e( 'e.g. Movie', 'cptm' ); ?></p>
 				</td>
 				<td>
-					<input type="text" name="cptm_singular_name" id="cptm_singular_name" class="widefat" value="<?php echo $cptm_singular_name; ?>" />
+					<input type="text" name="cptm_singular_name" id="cptm_singular_name" class="widefat" tabindex="3" value="<?php echo $cptm_singular_name; ?>" />
 				</td>
 			</tr>
 			<tr>
@@ -432,7 +433,7 @@ class Cptm {
 					<p><?php _e( 'A short descriptive summary of what the post type is.', 'cptm' ); ?></p>
 				</td>
 				<td>
-					<textarea name="cptm_description" id="cptm_description" class="widefat" rows="4"><?php echo $cptm_description; ?></textarea>
+					<textarea name="cptm_description" id="cptm_description" class="widefat" tabindex="4" rows="4"><?php echo $cptm_description; ?></textarea>
 				</td>
 			</tr>
 			<tr>
@@ -441,7 +442,7 @@ class Cptm {
 					<p><?php _e( 'Whether a post type is intended to be used publicly either via the admin interface or by front-end users.', 'cptm' ); ?></p>
 				</td>
 				<td>
-					<select name="cptm_public" id="cptm_public">
+					<select name="cptm_public" id="cptm_public" tabindex="5">
 						<option value="1" <?php selected( $cptm_public, '1' ); ?>><?php _e( 'True', 'cptm' ); ?> (<?php _e( 'default', 'cptm' ); ?>)</option>
 						<option value="0" <?php selected( $cptm_public, '0' ); ?>><?php _e( 'False', 'cptm' ); ?></option>
 					</select>
@@ -453,7 +454,7 @@ class Cptm {
 					<p><?php _e( 'Whether to generate a default UI for managing this post type in the admin.', 'cptm' ); ?></p>
 				</td>
 				<td>
-					<select name="cptm_show_ui" id="cptm_show_ui">
+					<select name="cptm_show_ui" id="cptm_show_ui" tabindex="6">
 						<option value="1" <?php selected( $cptm_show_ui, '1' ); ?>><?php _e( 'True', 'cptm' ); ?> (<?php _e( 'default', 'cptm' ); ?>)</option>
 						<option value="0" <?php selected( $cptm_show_ui, '0' ); ?>><?php _e( 'False', 'cptm' ); ?></option>
 					</select>
@@ -465,7 +466,7 @@ class Cptm {
 					<p><?php _e( 'Enables post type archives.', 'cptm' ); ?></p>
 				</td>
 				<td>
-					<select name="cptm_has_archive" id="cptm_has_archive">
+					<select name="cptm_has_archive" id="cptm_has_archive" tabindex="7">
 						<option value="0" <?php selected( $cptm_has_archive, '0' ); ?>><?php _e( 'False', 'cptm' ); ?> (<?php _e( 'default', 'cptm' ); ?>)</option>
 						<option value="1" <?php selected( $cptm_has_archive, '1' ); ?>><?php _e( 'True', 'cptm' ); ?></option>
 					</select>
@@ -477,7 +478,7 @@ class Cptm {
 					<p><?php _e( 'Whether to exclude posts with this post type from front end search results.', 'cptm' ); ?></p>
 				</td>
 				<td>
-					<select name="cptm_exclude_from_search" id="cptm_exclude_from_search">
+					<select name="cptm_exclude_from_search" id="cptm_exclude_from_search" tabindex="8">
 						<option value="0" <?php selected( $cptm_exclude_from_search, '0' ); ?>><?php _e( 'False', 'cptm' ); ?> (<?php _e( 'default', 'cptm' ); ?>)</option>
 						<option value="1" <?php selected( $cptm_exclude_from_search, '1' ); ?>><?php _e( 'True', 'cptm' ); ?></option>
 					</select>
@@ -489,7 +490,7 @@ class Cptm {
 					<p><?php _e( 'The post type to use to build the read, edit, and delete capabilities.', 'cptm' ); ?></p>
 				</td>
 				<td>
-					<select name="cptm_capability_type" id="cptm_capability_type">
+					<select name="cptm_capability_type" id="cptm_capability_type" tabindex="9">
 						<option value="post" <?php selected( $cptm_capability_type, 'post' ); ?>><?php _e( 'Post', 'cptm' ); ?> (<?php _e( 'default', 'cptm' ); ?>)</option>
 						<option value="page" <?php selected( $cptm_capability_type, 'page' ); ?>><?php _e( 'Page', 'cptm' ); ?></option>
 					</select>
@@ -501,7 +502,7 @@ class Cptm {
 					<p><?php _e( 'Whether the post type is hierarchical (e.g. page).', 'cptm' ); ?></p>
 				</td>
 				<td>
-					<select name="cptm_hierarchical" id="cptm_hierarchical">
+					<select name="cptm_hierarchical" id="cptm_hierarchical" tabindex="10">
 						<option value="0" <?php selected( $cptm_hierarchical, '0' ); ?>><?php _e( 'False', 'cptm' ); ?> (<?php _e( 'default', 'cptm' ); ?>)</option>
 						<option value="1" <?php selected( $cptm_hierarchical, '1' ); ?>><?php _e( 'True', 'cptm' ); ?></option>
 					</select>
@@ -513,7 +514,7 @@ class Cptm {
 					<p><?php _e( 'Triggers the handling of rewrites for this post type.', 'cptm' ); ?></p>
 				</td>
 				<td>
-					<select name="cptm_rewrite" id="cptm_rewrite">
+					<select name="cptm_rewrite" id="cptm_rewrite" tabindex="11">
 						<option value="1" <?php selected( $cptm_rewrite, '1' ); ?>><?php _e( 'True', 'cptm' ); ?> (<?php _e( 'default', 'cptm' ); ?>)</option>
 						<option value="0" <?php selected( $cptm_rewrite, '0' ); ?>><?php _e( 'False', 'cptm' ); ?></option>
 					</select>
@@ -526,7 +527,7 @@ class Cptm {
 					<p><?php _e( 'Default: [Custom Post Type Name]', 'cptm' ); ?></p>
 				</td>
 				<td>
-					<input type="text" name="cptm_custom_rewrite_slug" id="cptm_custom_rewrite_slug" class="widefat" value="<?php echo $cptm_custom_rewrite_slug; ?>" />
+					<input type="text" name="cptm_custom_rewrite_slug" id="cptm_custom_rewrite_slug" class="widefat" tabindex="12" value="<?php echo $cptm_custom_rewrite_slug; ?>" />
 				</td>
 			</tr>
 			<tr>
@@ -535,7 +536,7 @@ class Cptm {
 					<p><?php _e( 'Sets the query_var key for this post type.', 'cptm' ); ?></p>
 				</td>
 				<td>
-					<select name="cptm_query_var" id="cptm_query_var">
+					<select name="cptm_query_var" id="cptm_query_var" tabindex="13">
 						<option value="1" <?php selected( $cptm_query_var, '1' ); ?>><?php _e( 'True', 'cptm' ); ?> (<?php _e( 'default', 'cptm' ); ?>)</option>
 						<option value="0" <?php selected( $cptm_query_var, '0' ); ?>><?php _e( 'False', 'cptm' ); ?></option>
 					</select>
@@ -547,7 +548,7 @@ class Cptm {
 					<p><?php _e( 'The position in the menu order the post type should appear. "Show in Menu" must be true.', 'cptm' ); ?></p>
 				</td>
 				<td>
-					<input type="text" name="cptm_menu_position" id="cptm_menu_position" class="widefat" value="<?php echo $cptm_menu_position; ?>" />
+					<input type="text" name="cptm_menu_position" id="cptm_menu_position" class="widefat" tabindex="14" value="<?php echo $cptm_menu_position; ?>" />
 				</td>
 			</tr>
 			<tr>
@@ -556,7 +557,7 @@ class Cptm {
 					<p><?php _e( 'Where to show the post type in the admin menu. "Show UI" must be true.', 'cptm' ); ?></p>
 				</td>
 				<td>
-					<select name="cptm_show_in_menu" id="cptm_show_in_menu">
+					<select name="cptm_show_in_menu" id="cptm_show_in_menu" tabindex="15">
 						<option value="1" <?php selected( $cptm_show_in_menu, '1' ); ?>><?php _e( 'True', 'cptm' ); ?> (<?php _e( 'default', 'cptm' ); ?>)</option>
 						<option value="0" <?php selected( $cptm_show_in_menu, '0' ); ?>><?php _e( 'False', 'cptm' ); ?></option>
 					</select>
@@ -568,17 +569,17 @@ class Cptm {
 					<p><?php _e( 'Adds the respective meta boxes when creating content for this Custom Post Type.', 'cptm' ); ?></p>
 				</td>
 				<td>
-					<input type="checkbox" name="cptm_supports[]" id="cptm_supports_title" value="title" <?php checked( $cptm_supports_title, 'title' ); ?> /> <label for="cptm_supports_title"><?php _e( 'Title', 'cptm' ); ?> <span class="default">(<?php _e( 'default', 'cptm' ); ?>)</span></label><br />
-					<input type="checkbox" name="cptm_supports[]" id="cptm_supports_editor" value="editor" <?php checked( $cptm_supports_editor, 'editor' ); ?> /> <label for="cptm_supports_editor"><?php _e( 'Editor', 'cptm' ); ?> <span class="default">(<?php _e( 'default', 'cptm' ); ?>)</span></label><br />
-					<input type="checkbox" name="cptm_supports[]" id="cptm_supports_excerpt" value="excerpt" <?php checked( $cptm_supports_excerpt, 'excerpt' ); ?> /> <label for="cptm_supports_excerpt"><?php _e( 'Excerpt', 'cptm' ); ?> <span class="default">(<?php _e( 'default', 'cptm' ); ?>)</span></label><br />
-					<input type="checkbox" name="cptm_supports[]" id="cptm_supports_trackbacks" value="trackbacks" <?php checked( $cptm_supports_trackbacks, 'trackbacks' ); ?> /> <label for="cptm_supports_trackbacks"><?php _e( 'Trackbacks', 'cptm' ); ?></label><br />
-					<input type="checkbox" name="cptm_supports[]" id="cptm_supports_custom_fields" value="custom-fields" <?php checked( $cptm_supports_custom_fields, 'custom-fields' ); ?> /> <label for="cptm_supports_custom_fields"><?php _e( 'Custom Fields', 'cptm' ); ?></label><br />
-					<input type="checkbox" name="cptm_supports[]" id="cptm_supports_comments" value="comments" <?php checked( $cptm_supports_comments, 'comments' ); ?> /> <label for="cptm_supports_comments"><?php _e( 'Comments', 'cptm' ); ?></label><br />
-					<input type="checkbox" name="cptm_supports[]" id="cptm_supports_revisions" value="revisions" <?php checked( $cptm_supports_revisions, 'revisions' ); ?> /> <label for="cptm_supports_revisions"><?php _e( 'Revisions', 'cptm' ); ?></label><br />
-					<input type="checkbox" name="cptm_supports[]" id="cptm_supports_featured_image" value="thumbnail" <?php checked( $cptm_supports_featured_image, 'thumbnail' ); ?> /> <label for="cptm_supports_featured_image"><?php _e( 'Featured Image', 'cptm' ); ?></label><br />
-					<input type="checkbox" name="cptm_supports[]" id="cptm_supports_author" value="author" <?php checked( $cptm_supports_author, 'author' ); ?> /> <label for="cptm_supports_author"><?php _e( 'Author', 'cptm' ); ?></label><br />
-					<input type="checkbox" name="cptm_supports[]" id="cptm_supports_page_attributes" value="page-attributes" <?php checked( $cptm_supports_page_attributes, 'page-attributes' ); ?> /> <label for="cptm_supports_page_attributes"><?php _e( 'Page Attributes', 'cptm' ); ?></label><br />
-					<input type="checkbox" name="cptm_supports[]" id="cptm_supports_post_formats" value="post-formats" <?php checked( $cptm_supports_post_formats, 'post-formats' ); ?> /> <label for="cptm_supports_post_formats"><?php _e( 'Post Formats', 'cptm' ); ?></label><br />
+					<input type="checkbox" tabindex="16" name="cptm_supports[]" id="cptm_supports_title" value="title" <?php checked( $cptm_supports_title, 'title' ); ?> /> <label for="cptm_supports_title"><?php _e( 'Title', 'cptm' ); ?> <span class="default">(<?php _e( 'default', 'cptm' ); ?>)</span></label><br />
+					<input type="checkbox" tabindex="17" name="cptm_supports[]" id="cptm_supports_editor" value="editor" <?php checked( $cptm_supports_editor, 'editor' ); ?> /> <label for="cptm_supports_editor"><?php _e( 'Editor', 'cptm' ); ?> <span class="default">(<?php _e( 'default', 'cptm' ); ?>)</span></label><br />
+					<input type="checkbox" tabindex="18" name="cptm_supports[]" id="cptm_supports_excerpt" value="excerpt" <?php checked( $cptm_supports_excerpt, 'excerpt' ); ?> /> <label for="cptm_supports_excerpt"><?php _e( 'Excerpt', 'cptm' ); ?> <span class="default">(<?php _e( 'default', 'cptm' ); ?>)</span></label><br />
+					<input type="checkbox" tabindex="19" name="cptm_supports[]" id="cptm_supports_trackbacks" value="trackbacks" <?php checked( $cptm_supports_trackbacks, 'trackbacks' ); ?> /> <label for="cptm_supports_trackbacks"><?php _e( 'Trackbacks', 'cptm' ); ?></label><br />
+					<input type="checkbox" tabindex="20" name="cptm_supports[]" id="cptm_supports_custom_fields" value="custom-fields" <?php checked( $cptm_supports_custom_fields, 'custom-fields' ); ?> /> <label for="cptm_supports_custom_fields"><?php _e( 'Custom Fields', 'cptm' ); ?></label><br />
+					<input type="checkbox" tabindex="21" name="cptm_supports[]" id="cptm_supports_comments" value="comments" <?php checked( $cptm_supports_comments, 'comments' ); ?> /> <label for="cptm_supports_comments"><?php _e( 'Comments', 'cptm' ); ?></label><br />
+					<input type="checkbox" tabindex="22" name="cptm_supports[]" id="cptm_supports_revisions" value="revisions" <?php checked( $cptm_supports_revisions, 'revisions' ); ?> /> <label for="cptm_supports_revisions"><?php _e( 'Revisions', 'cptm' ); ?></label><br />
+					<input type="checkbox" tabindex="23" name="cptm_supports[]" id="cptm_supports_featured_image" value="thumbnail" <?php checked( $cptm_supports_featured_image, 'thumbnail' ); ?> /> <label for="cptm_supports_featured_image"><?php _e( 'Featured Image', 'cptm' ); ?></label><br />
+					<input type="checkbox" tabindex="24" name="cptm_supports[]" id="cptm_supports_author" value="author" <?php checked( $cptm_supports_author, 'author' ); ?> /> <label for="cptm_supports_author"><?php _e( 'Author', 'cptm' ); ?></label><br />
+					<input type="checkbox" tabindex="25" name="cptm_supports[]" id="cptm_supports_page_attributes" value="page-attributes" <?php checked( $cptm_supports_page_attributes, 'page-attributes' ); ?> /> <label for="cptm_supports_page_attributes"><?php _e( 'Page Attributes', 'cptm' ); ?></label><br />
+					<input type="checkbox" tabindex="26" name="cptm_supports[]" id="cptm_supports_post_formats" value="post-formats" <?php checked( $cptm_supports_post_formats, 'post-formats' ); ?> /> <label for="cptm_supports_post_formats"><?php _e( 'Post Formats', 'cptm' ); ?></label><br />
 				</td>
 			</tr>
 			<tr>
@@ -587,8 +588,8 @@ class Cptm {
 					<p><?php _e( '', 'cptm' ); ?></p>
 				</td>
 				<td>
-					<input type="checkbox" name="cptm_builtin_taxonomies[]" id="cptm_builtin_taxonomies_categories" value="category" <?php checked( $cptm_builtin_taxonomies_categories, 'category' ); ?> /> <label for="cptm_builtin_taxonomies_categories"><?php _e( 'Categories', 'cptm' ); ?></label><br />
-					<input type="checkbox" name="cptm_builtin_taxonomies[]" id="cptm_builtin_taxonomies_tags" value="post_tag" <?php checked( $cptm_builtin_taxonomies_tags, 'post_tag' ); ?> /> <label for="cptm_builtin_taxonomies_tags"><?php _e( 'Tags', 'cptm' ); ?></label><br />
+					<input type="checkbox" tabindex="27" name="cptm_builtin_taxonomies[]" id="cptm_builtin_taxonomies_categories" value="category" <?php checked( $cptm_builtin_taxonomies_categories, 'category' ); ?> /> <label for="cptm_builtin_taxonomies_categories"><?php _e( 'Categories', 'cptm' ); ?></label><br />
+					<input type="checkbox" tabindex="28" name="cptm_builtin_taxonomies[]" id="cptm_builtin_taxonomies_tags" value="post_tag" <?php checked( $cptm_builtin_taxonomies_tags, 'post_tag' ); ?> /> <label for="cptm_builtin_taxonomies_tags"><?php _e( 'Tags', 'cptm' ); ?></label><br />
 				</td>
 			</tr>
 		</table>
@@ -643,7 +644,7 @@ class Cptm {
 					<p><?php _e( 'e.g. movies', 'cptm' ); ?></p>
 				</td>
 				<td>
-					<input type="text" name="cptm_tax_name" id="cptm_tax_name" class="widefat" value="<?php echo $cptm_tax_name; ?>" />
+					<input type="text" name="cptm_tax_name" id="cptm_tax_name" class="widefat" tabindex="1" value="<?php echo $cptm_tax_name; ?>" />
 				</td>
 			</tr>
 			<tr>
@@ -653,7 +654,7 @@ class Cptm {
 					<p><?php _e( 'e.g. Movies', 'cptm' ); ?></p>
 				</td>
 				<td>
-					<input type="text" name="cptm_tax_label" id="cptm_tax_label" class="widefat" value="<?php echo $cptm_tax_label; ?>" />
+					<input type="text" name="cptm_tax_label" id="cptm_tax_label" class="widefat" tabindex="2" value="<?php echo $cptm_tax_label; ?>" />
 				</td>
 			</tr>
 			<tr>
@@ -663,7 +664,7 @@ class Cptm {
 					<p><?php _e( 'e.g. Movie', 'cptm' ); ?></p>
 				</td>
 				<td>
-					<input type="text" name="cptm_tax_singular_name" id="cptm_tax_singular_name" class="widefat" value="<?php echo $cptm_tax_singular_name; ?>" />
+					<input type="text" name="cptm_tax_singular_name" id="cptm_tax_singular_name" class="widefat" tabindex="3" value="<?php echo $cptm_tax_singular_name; ?>" />
 				</td>
 			</tr>
 			<tr>
@@ -672,7 +673,7 @@ class Cptm {
 					<p><?php _e( 'Whether to generate a default UI for managing this taxonomy in the admin.', 'cptm' ); ?></p>
 				</td>
 				<td>
-					<select name="cptm_tax_show_ui" id="cptm_tax_show_ui">
+					<select name="cptm_tax_show_ui" id="cptm_tax_show_ui" tabindex="4">
 						<option value="1" <?php selected( $cptm_tax_show_ui, '1' ); ?>><?php _e( 'True', 'cptm' ); ?> (<?php _e( 'default', 'cptm' ); ?>)</option>
 						<option value="0" <?php selected( $cptm_tax_show_ui, '0' ); ?>><?php _e( 'False', 'cptm' ); ?></option>
 					</select>
@@ -684,7 +685,7 @@ class Cptm {
 					<p><?php _e( 'Whether the taxonomy is hierarchical (e.g. page).', 'cptm' ); ?></p>
 				</td>
 				<td>
-					<select name="cptm_tax_hierarchical" id="cptm_tax_hierarchical">
+					<select name="cptm_tax_hierarchical" id="cptm_tax_hierarchical" tabindex="5">
 						<option value="0" <?php selected( $cptm_tax_hierarchical, '0' ); ?>><?php _e( 'False', 'cptm' ); ?> (<?php _e( 'default', 'cptm' ); ?>)</option>
 						<option value="1" <?php selected( $cptm_tax_hierarchical, '1' ); ?>><?php _e( 'True', 'cptm' ); ?></option>
 					</select>
@@ -696,7 +697,7 @@ class Cptm {
 					<p><?php _e( 'Triggers the handling of rewrites for this taxonomy.', 'cptm' ); ?></p>
 				</td>
 				<td>
-					<select name="cptm_tax_rewrite" id="cptm_tax_rewrite">
+					<select name="cptm_tax_rewrite" id="cptm_tax_rewrite" tabindex="6">
 						<option value="1" <?php selected( $cptm_tax_rewrite, '1' ); ?>><?php _e( 'True', 'cptm' ); ?> (<?php _e( 'default', 'cptm' ); ?>)</option>
 						<option value="0" <?php selected( $cptm_tax_rewrite, '0' ); ?>><?php _e( 'False', 'cptm' ); ?></option>
 					</select>
@@ -709,7 +710,7 @@ class Cptm {
 					<p><?php _e( 'Default: [Custom Taxonomy Name]', 'cptm' ); ?></p>
 				</td>
 				<td>
-					<input type="text" name="cptm_tax_custom_rewrite_slug" id="cptm_tax_custom_rewrite_slug" class="widefat" value="<?php echo $cptm_tax_custom_rewrite_slug; ?>" />
+					<input type="text" name="cptm_tax_custom_rewrite_slug" id="cptm_tax_custom_rewrite_slug" class="widefat" tabindex="7" value="<?php echo $cptm_tax_custom_rewrite_slug; ?>" />
 				</td>
 			</tr>
 			<tr>
@@ -718,7 +719,7 @@ class Cptm {
 					<p><?php _e( 'Sets the query_var key for this taxonomy.', 'cptm' ); ?></p>
 				</td>
 				<td>
-					<select name="cptm_tax_query_var" id="cptm_tax_query_var">
+					<select name="cptm_tax_query_var" id="cptm_tax_query_var" tabindex="8">
 						<option value="1" <?php selected( $cptm_tax_query_var, '1' ); ?>><?php _e( 'True', 'cptm' ); ?> (<?php _e( 'default', 'cptm' ); ?>)</option>
 						<option value="0" <?php selected( $cptm_tax_query_var, '0' ); ?>><?php _e( 'False', 'cptm' ); ?></option>
 					</select>
@@ -730,15 +731,17 @@ class Cptm {
 					<p><?php _e( '', 'cptm' ); ?></p>
 				</td>
 				<td>
-					<input type="checkbox" name="cptm_tax_post_types[]" id="cptm_tax_post_types_post" value="post" <?php checked( $cptm_tax_post_types_post, 'post' ); ?> /> <label for="cptm_tax_post_types_post"><?php _e( 'Posts', 'cptm' ); ?></label><br />
-					<input type="checkbox" name="cptm_tax_post_types[]" id="cptm_tax_post_types_page" value="page" <?php checked( $cptm_tax_post_types_page, 'page' ); ?> /> <label for="cptm_tax_post_types_page"><?php _e( 'Pages', 'cptm' ); ?></label><br />
+					<input type="checkbox" tabindex="9" name="cptm_tax_post_types[]" id="cptm_tax_post_types_post" value="post" <?php checked( $cptm_tax_post_types_post, 'post' ); ?> /> <label for="cptm_tax_post_types_post"><?php _e( 'Posts', 'cptm' ); ?></label><br />
+					<input type="checkbox" tabindex="10" name="cptm_tax_post_types[]" id="cptm_tax_post_types_page" value="page" <?php checked( $cptm_tax_post_types_page, 'page' ); ?> /> <label for="cptm_tax_post_types_page"><?php _e( 'Pages', 'cptm' ); ?></label><br />
 					<?php
 						$post_types = get_post_types( array( 'public' => true, '_builtin' => false ) );
+						$i = 10;
 						foreach ( $post_types as $post_type ) {
 							$checked = in_array( $post_type, $cptm_tax_post_types )  ? 'checked="checked"' : '';
 							?>
-							<input type="checkbox" name="cptm_tax_post_types[]" id="cptm_tax_post_types_<?php echo $post_type; ?>" value="<?php echo $post_type; ?>" <?php echo $checked; ?> /> <label for="cptm_tax_post_types_<?php echo $post_type; ?>"><?php echo ucfirst( $post_type ); ?></label><br />
+							<input type="checkbox" tabindex="<?php echo $i; ?>" name="cptm_tax_post_types[]" id="cptm_tax_post_types_<?php echo $post_type; ?>" value="<?php echo $post_type; ?>" <?php echo $checked; ?> /> <label for="cptm_tax_post_types_<?php echo $post_type; ?>"><?php echo ucfirst( $post_type ); ?></label><br />
 							<?php
+							$i++;
 						}
 					?>
 				</td>
@@ -939,6 +942,18 @@ class Cptm {
 		</div>
 		<?php
 		if( 'cptm' == $post_type ) {
+
+			// Get all public Custom Post Types
+			$post_types = get_post_types( array( 'public' => true, '_builtin' => false ), 'objects' );
+			// Get all Custom Post Types created by Custom Post Type Maker
+			$cptm_posts = get_posts( array( 'post_type' => 'cptm' ) );
+			// Remove all Custom Post Types created by the Custom Post Type Maker plugin
+			foreach ( $cptm_posts as $cptm_post ) {
+				$values = get_post_custom( $cptm_post->ID );
+				unset( $post_types[ $values['cptm_name'][0] ] );
+			}
+
+			if ( count( $post_types ) != 0 ) {
 			?>
 			<div id="cptm-cpt-overview" class="hidden">
 				<div id="icon-edit" class="icon32 icon32-posts-cptm"><br></div>
@@ -985,15 +1000,6 @@ class Cptm {
 
 					<tbody id="the-list">
 						<?php
-							// Get all public Custom Post Types
-							$post_types = get_post_types( array( 'public' => true, '_builtin' => false ), 'objects' );
-							// Get all Custom Post Types created by Custom Post Type Maker
-							$cptm_posts = get_posts( array( 'post_type' => 'cptm' ) );
-							// Remove all Custom Post Types created by the Custom Post Type Maker plugin
-							foreach ( $cptm_posts as $cptm_post ) {
-								$values = get_post_custom( $cptm_post->ID );
-								unset( $post_types[ $values['cptm_name'][0] ] );
-							}
 							// Create list of all other registered Custom Post Types
 							foreach ( $post_types as $post_type ) {
 								?>
@@ -1033,8 +1039,21 @@ class Cptm {
 
 			</div>
 			<?php
+			}
 		}
 		if( 'cptm_tax' == $post_type ) {
+			
+			// Get all public custom Taxonomies
+			$taxonomies = get_taxonomies( array( 'public' => true, '_builtin' => false ), 'objects' );
+			// Get all custom Taxonomies created by Custom Post Type Maker
+			$cptm_tax_posts = get_posts( array( 'post_type' => 'cptm_tax' ) );
+			// Remove all custom Taxonomies created by the Custom Post Type Maker plugin
+			foreach ( $cptm_tax_posts as $cptm_tax_post ) {
+				$values = get_post_custom( $cptm_tax_post->ID );
+				unset( $taxonomies[ $values['cptm_tax_name'][0] ] );
+			}
+
+			if ( count( $taxonomies ) != 0 ) {
 			?>
 			<div id="cptm-cpt-overview" class="hidden">
 				<div id="icon-edit" class="icon32 icon32-posts-cptm"><br></div>
@@ -1075,16 +1094,6 @@ class Cptm {
 
 					<tbody id="the-list">
 						<?php
-							// Get all public custom Taxonomies
-							$taxonomies = get_taxonomies( array( 'public' => true, '_builtin' => false ), 'objects' );
-							// Get all custom Taxonomies created by Custom Post Type Maker
-							$cptm_tax_posts = get_posts( array( 'post_type' => 'cptm_tax' ) );
-							// Remove all custom Taxonomies created by the Custom Post Type Maker plugin
-							foreach ( $cptm_tax_posts as $cptm_tax_post ) {
-								$values = get_post_custom( $cptm_tax_post->ID );
-								unset( $taxonomies[ $values['cptm_tax_name'][0] ] );
-							}
-
 							// Create list of all other registered Custom Post Types
 							foreach ( $taxonomies as $taxonomy ) {
 								?>
@@ -1123,6 +1132,7 @@ class Cptm {
 
 			</div>
 			<?php
+			}
 		}
 
 	} // # function cptm_admin_footer()
