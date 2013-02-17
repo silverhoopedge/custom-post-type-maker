@@ -4,7 +4,7 @@ Plugin Name: Custom Post Type Maker
 Plugin URI: http://www.bakhuys.com/wordpress/plugin/custom-post-type-maker/
 Description: Custom Post Type Maker lets you create Custom Post Types and custom Taxonomies in a user friendly way.
 Author: Jorn Bakhuys
-Version: 0.0.6
+Version: 0.0.7
 Author URI: http://www.bakhuys.com/
 */
 
@@ -23,7 +23,7 @@ class Cptm {
 		// vars
 		$this->dir = plugins_url( '', __FILE__ );
 		$this->path = plugin_dir_path( __FILE__ );
-		$this->version = '0.0.6';
+		$this->version = '0.0.7';
 
 		// actions
 		add_action( 'init', array($this, 'init') );
@@ -113,7 +113,7 @@ class Cptm {
 	public function cptm_admin_menu() {
 	
 		// add cptm page to options menu
-		add_utility_page( __("CPT Maker", 'cptm'), __("Post Types", 'cptm'), 'manage_options', 'edit.php?post_type=cptm' );
+		add_utility_page( __("CPT Maker", 'cptm'), __("Post Types", 'cptm'), 'manage_options', 'edit.php?post_type=cptm', '', $this->dir . '/img/cptm-icon.png' );
 		add_submenu_page( 'edit.php?post_type=cptm', __("Taxonomies", 'cptm'), __("Taxonomies", 'cptm'), 'manage_options', 'edit.php?post_type=cptm_tax' );
 		
 	} // # function cptm_admin_menu()
@@ -175,13 +175,22 @@ class Cptm {
 				$cptm_exclude_from_search = ( array_key_exists( 'cptm_exclude_from_search', $cptm_meta ) && $cptm_meta['cptm_exclude_from_search'][0] == '1' ? true : false );
 				$cptm_capability_type     = ( array_key_exists( 'cptm_capability_type', $cptm_meta ) && $cptm_meta['cptm_capability_type'][0] ? $cptm_meta['cptm_capability_type'][0] : 'post' );
 				$cptm_hierarchical        = ( array_key_exists( 'cptm_hierarchical', $cptm_meta ) && $cptm_meta['cptm_hierarchical'][0] == '1' ? true : false );
-				$cptm_rewrite             = ( array_key_exists( 'cptm_rewrite', $cptm_meta ) && $cptm_meta['cptm_rewrite'][0] == '1' ? array( 'slug' => _x( $cptm_custom_rewrite_slug, 'URL Slug', 'cptm' ) ) : false );
+				$cptm_rewrite             = ( array_key_exists( 'cptm_rewrite', $cptm_meta ) && $cptm_meta['cptm_rewrite'][0] == '1' ? true : false );
+				$cptm_withfront           = ( array_key_exists( 'cptm_withfront', $cptm_meta ) && $cptm_meta['cptm_withfront'][0] == '1' ? true : false );
+				$cptm_feeds               = ( array_key_exists( 'cptm_feeds', $cptm_meta ) && $cptm_meta['cptm_feeds'][0] == '1' ? true : false );
+				$cptm_pages               = ( array_key_exists( 'cptm_pages', $cptm_meta ) && $cptm_meta['cptm_pages'][0] == '1' ? true : false );
 				$cptm_query_var           = ( array_key_exists( 'cptm_query_var', $cptm_meta ) && $cptm_meta['cptm_query_var'][0] == '1' ? true : false );
 				$cptm_show_in_menu        = ( array_key_exists( 'cptm_show_in_menu', $cptm_meta ) && $cptm_meta['cptm_show_in_menu'][0] == '1' ? true : false );
 
 				// checkbox
 				$cptm_supports            = ( array_key_exists( 'cptm_supports', $cptm_meta ) && $cptm_meta['cptm_supports'][0] ? $cptm_meta['cptm_supports'][0] : 'a:2:{i:0;s:5:"title";i:1;s:6:"editor";}' );
 				$cptm_builtin_taxonomies  = ( array_key_exists( 'cptm_builtin_taxonomies', $cptm_meta ) && $cptm_meta['cptm_builtin_taxonomies'][0] ? $cptm_meta['cptm_builtin_taxonomies'][0] : 'a:0:{}' );
+
+				$cptm_rewrite_options     = array();
+				if ( $cptm_rewrite )      { $cptm_rewrite_options['slug'] = _x( $cptm_custom_rewrite_slug, 'URL Slug', 'cptm' ); }
+				if ( $cptm_withfront )    { $cptm_rewrite_options['with_front'] = $cptm_withfront; }
+				if ( $cptm_feeds )        { $cptm_rewrite_options['feeds'] = $cptm_feeds; }
+				if ( $cptm_pages )        { $cptm_rewrite_options['pages'] = $cptm_pages; }
 
 				$cptms[] = array(
 					'cptm_id'                  => $cptm->ID,
@@ -197,7 +206,7 @@ class Cptm {
 					'cptm_exclude_from_search' => (bool) $cptm_exclude_from_search,
 					'cptm_capability_type'     => $cptm_capability_type,
 					'cptm_hierarchical'        => (bool) $cptm_hierarchical,
-					'cptm_rewrite'             => $cptm_rewrite,
+					'cptm_rewrite'             => $cptm_rewrite_options,
 					'cptm_query_var'           => (bool) $cptm_query_var,
 					'cptm_show_in_menu'        => (bool) $cptm_show_in_menu,
 					'cptm_supports'            => unserialize( $cptm_supports ),
@@ -327,6 +336,10 @@ class Cptm {
 			}
 		}
 
+		// flush permalink structure
+		global $wp_rewrite;
+		$wp_rewrite->flush_rules();
+
 	} // # function cptm_create_custom_post_types()
 
 	public function cptm_create_meta_boxes() {
@@ -372,6 +385,9 @@ class Cptm {
 		$cptm_capability_type               = isset( $values['cptm_capability_type'] ) ? esc_attr( $values['cptm_capability_type'][0] ) : '';
 		$cptm_hierarchical                  = isset( $values['cptm_hierarchical'] ) ? esc_attr( $values['cptm_hierarchical'][0] ) : '';
 		$cptm_rewrite                       = isset( $values['cptm_rewrite'] ) ? esc_attr( $values['cptm_rewrite'][0] ) : '';
+		$cptm_withfront                     = isset( $values['cptm_withfront'] ) ? esc_attr( $values['cptm_withfront'][0] ) : '';
+		$cptm_feeds                         = isset( $values['cptm_feeds'] ) ? esc_attr( $values['cptm_feeds'][0] ) : '';
+		$cptm_pages                         = isset( $values['cptm_pages'] ) ? esc_attr( $values['cptm_pages'][0] ) : '';
 		$cptm_query_var                     = isset( $values['cptm_query_var'] ) ? esc_attr( $values['cptm_query_var'][0] ) : '';
 		$cptm_show_in_menu                  = isset( $values['cptm_show_in_menu'] ) ? esc_attr( $values['cptm_show_in_menu'][0] ) : '';
 
@@ -522,12 +538,48 @@ class Cptm {
 			</tr>
 			<tr>
 				<td class="label">
+					<label for="cptm_withfront"><?php _e( 'With Front', 'cptm' ); ?></label>
+					<p><?php _e( 'Should the permastruct be prepended with the front base.', 'cptm' ); ?></p>
+				</td>
+				<td>
+					<select name="cptm_withfront" id="cptm_withfront" tabindex="12">
+						<option value="1" <?php selected( $cptm_withfront, '1' ); ?>><?php _e( 'True', 'cptm' ); ?> (<?php _e( 'default', 'cptm' ); ?>)</option>
+						<option value="0" <?php selected( $cptm_withfront, '0' ); ?>><?php _e( 'False', 'cptm' ); ?></option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td class="label">
+					<label for="cptm_feeds"><?php _e( 'Feeds', 'cptm' ); ?></label>
+					<p><?php _e( 'Should a feed permastruct be built for this post type. Defaults to "has_archive" value.', 'cptm' ); ?></p>
+				</td>
+				<td>
+					<select name="cptm_feeds" id="cptm_feeds" tabindex="13">
+						<option value="0" <?php selected( $cptm_feeds, '0' ); ?>><?php _e( 'False', 'cptm' ); ?> (<?php _e( 'default', 'cptm' ); ?>)</option>
+						<option value="1" <?php selected( $cptm_feeds, '1' ); ?>><?php _e( 'True', 'cptm' ); ?></option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td class="label">
+					<label for="cptm_pages"><?php _e( 'Pages', 'cptm' ); ?></label>
+					<p><?php _e( 'Should the permastruct provide for pagination.', 'cptm' ); ?></p>
+				</td>
+				<td>
+					<select name="cptm_pages" id="cptm_pages" tabindex="14">
+						<option value="1" <?php selected( $cptm_pages, '1' ); ?>><?php _e( 'True', 'cptm' ); ?> (<?php _e( 'default', 'cptm' ); ?>)</option>
+						<option value="0" <?php selected( $cptm_pages, '0' ); ?>><?php _e( 'False', 'cptm' ); ?></option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td class="label">
 					<label for="cptm_custom_rewrite_slug"><?php _e( 'Custom Rewrite Slug', 'cptm' ); ?></label>
 					<p><?php _e( 'Customize the permastruct slug.', 'cptm' ); ?></p>
 					<p><?php _e( 'Default: [Custom Post Type Name]', 'cptm' ); ?></p>
 				</td>
 				<td>
-					<input type="text" name="cptm_custom_rewrite_slug" id="cptm_custom_rewrite_slug" class="widefat" tabindex="12" value="<?php echo $cptm_custom_rewrite_slug; ?>" />
+					<input type="text" name="cptm_custom_rewrite_slug" id="cptm_custom_rewrite_slug" class="widefat" tabindex="15" value="<?php echo $cptm_custom_rewrite_slug; ?>" />
 				</td>
 			</tr>
 			<tr>
@@ -536,7 +588,7 @@ class Cptm {
 					<p><?php _e( 'Sets the query_var key for this post type.', 'cptm' ); ?></p>
 				</td>
 				<td>
-					<select name="cptm_query_var" id="cptm_query_var" tabindex="13">
+					<select name="cptm_query_var" id="cptm_query_var" tabindex="16">
 						<option value="1" <?php selected( $cptm_query_var, '1' ); ?>><?php _e( 'True', 'cptm' ); ?> (<?php _e( 'default', 'cptm' ); ?>)</option>
 						<option value="0" <?php selected( $cptm_query_var, '0' ); ?>><?php _e( 'False', 'cptm' ); ?></option>
 					</select>
@@ -548,7 +600,7 @@ class Cptm {
 					<p><?php _e( 'The position in the menu order the post type should appear. "Show in Menu" must be true.', 'cptm' ); ?></p>
 				</td>
 				<td>
-					<input type="text" name="cptm_menu_position" id="cptm_menu_position" class="widefat" tabindex="14" value="<?php echo $cptm_menu_position; ?>" />
+					<input type="text" name="cptm_menu_position" id="cptm_menu_position" class="widefat" tabindex="17" value="<?php echo $cptm_menu_position; ?>" />
 				</td>
 			</tr>
 			<tr>
@@ -557,7 +609,7 @@ class Cptm {
 					<p><?php _e( 'Where to show the post type in the admin menu. "Show UI" must be true.', 'cptm' ); ?></p>
 				</td>
 				<td>
-					<select name="cptm_show_in_menu" id="cptm_show_in_menu" tabindex="15">
+					<select name="cptm_show_in_menu" id="cptm_show_in_menu" tabindex="18">
 						<option value="1" <?php selected( $cptm_show_in_menu, '1' ); ?>><?php _e( 'True', 'cptm' ); ?> (<?php _e( 'default', 'cptm' ); ?>)</option>
 						<option value="0" <?php selected( $cptm_show_in_menu, '0' ); ?>><?php _e( 'False', 'cptm' ); ?></option>
 					</select>
@@ -569,17 +621,17 @@ class Cptm {
 					<p><?php _e( 'Adds the respective meta boxes when creating content for this Custom Post Type.', 'cptm' ); ?></p>
 				</td>
 				<td>
-					<input type="checkbox" tabindex="16" name="cptm_supports[]" id="cptm_supports_title" value="title" <?php checked( $cptm_supports_title, 'title' ); ?> /> <label for="cptm_supports_title"><?php _e( 'Title', 'cptm' ); ?> <span class="default">(<?php _e( 'default', 'cptm' ); ?>)</span></label><br />
-					<input type="checkbox" tabindex="17" name="cptm_supports[]" id="cptm_supports_editor" value="editor" <?php checked( $cptm_supports_editor, 'editor' ); ?> /> <label for="cptm_supports_editor"><?php _e( 'Editor', 'cptm' ); ?> <span class="default">(<?php _e( 'default', 'cptm' ); ?>)</span></label><br />
-					<input type="checkbox" tabindex="18" name="cptm_supports[]" id="cptm_supports_excerpt" value="excerpt" <?php checked( $cptm_supports_excerpt, 'excerpt' ); ?> /> <label for="cptm_supports_excerpt"><?php _e( 'Excerpt', 'cptm' ); ?> <span class="default">(<?php _e( 'default', 'cptm' ); ?>)</span></label><br />
-					<input type="checkbox" tabindex="19" name="cptm_supports[]" id="cptm_supports_trackbacks" value="trackbacks" <?php checked( $cptm_supports_trackbacks, 'trackbacks' ); ?> /> <label for="cptm_supports_trackbacks"><?php _e( 'Trackbacks', 'cptm' ); ?></label><br />
-					<input type="checkbox" tabindex="20" name="cptm_supports[]" id="cptm_supports_custom_fields" value="custom-fields" <?php checked( $cptm_supports_custom_fields, 'custom-fields' ); ?> /> <label for="cptm_supports_custom_fields"><?php _e( 'Custom Fields', 'cptm' ); ?></label><br />
-					<input type="checkbox" tabindex="21" name="cptm_supports[]" id="cptm_supports_comments" value="comments" <?php checked( $cptm_supports_comments, 'comments' ); ?> /> <label for="cptm_supports_comments"><?php _e( 'Comments', 'cptm' ); ?></label><br />
-					<input type="checkbox" tabindex="22" name="cptm_supports[]" id="cptm_supports_revisions" value="revisions" <?php checked( $cptm_supports_revisions, 'revisions' ); ?> /> <label for="cptm_supports_revisions"><?php _e( 'Revisions', 'cptm' ); ?></label><br />
-					<input type="checkbox" tabindex="23" name="cptm_supports[]" id="cptm_supports_featured_image" value="thumbnail" <?php checked( $cptm_supports_featured_image, 'thumbnail' ); ?> /> <label for="cptm_supports_featured_image"><?php _e( 'Featured Image', 'cptm' ); ?></label><br />
-					<input type="checkbox" tabindex="24" name="cptm_supports[]" id="cptm_supports_author" value="author" <?php checked( $cptm_supports_author, 'author' ); ?> /> <label for="cptm_supports_author"><?php _e( 'Author', 'cptm' ); ?></label><br />
-					<input type="checkbox" tabindex="25" name="cptm_supports[]" id="cptm_supports_page_attributes" value="page-attributes" <?php checked( $cptm_supports_page_attributes, 'page-attributes' ); ?> /> <label for="cptm_supports_page_attributes"><?php _e( 'Page Attributes', 'cptm' ); ?></label><br />
-					<input type="checkbox" tabindex="26" name="cptm_supports[]" id="cptm_supports_post_formats" value="post-formats" <?php checked( $cptm_supports_post_formats, 'post-formats' ); ?> /> <label for="cptm_supports_post_formats"><?php _e( 'Post Formats', 'cptm' ); ?></label><br />
+					<input type="checkbox" tabindex="19" name="cptm_supports[]" id="cptm_supports_title" value="title" <?php checked( $cptm_supports_title, 'title' ); ?> /> <label for="cptm_supports_title"><?php _e( 'Title', 'cptm' ); ?> <span class="default">(<?php _e( 'default', 'cptm' ); ?>)</span></label><br />
+					<input type="checkbox" tabindex="20" name="cptm_supports[]" id="cptm_supports_editor" value="editor" <?php checked( $cptm_supports_editor, 'editor' ); ?> /> <label for="cptm_supports_editor"><?php _e( 'Editor', 'cptm' ); ?> <span class="default">(<?php _e( 'default', 'cptm' ); ?>)</span></label><br />
+					<input type="checkbox" tabindex="21" name="cptm_supports[]" id="cptm_supports_excerpt" value="excerpt" <?php checked( $cptm_supports_excerpt, 'excerpt' ); ?> /> <label for="cptm_supports_excerpt"><?php _e( 'Excerpt', 'cptm' ); ?> <span class="default">(<?php _e( 'default', 'cptm' ); ?>)</span></label><br />
+					<input type="checkbox" tabindex="22" name="cptm_supports[]" id="cptm_supports_trackbacks" value="trackbacks" <?php checked( $cptm_supports_trackbacks, 'trackbacks' ); ?> /> <label for="cptm_supports_trackbacks"><?php _e( 'Trackbacks', 'cptm' ); ?></label><br />
+					<input type="checkbox" tabindex="23" name="cptm_supports[]" id="cptm_supports_custom_fields" value="custom-fields" <?php checked( $cptm_supports_custom_fields, 'custom-fields' ); ?> /> <label for="cptm_supports_custom_fields"><?php _e( 'Custom Fields', 'cptm' ); ?></label><br />
+					<input type="checkbox" tabindex="24" name="cptm_supports[]" id="cptm_supports_comments" value="comments" <?php checked( $cptm_supports_comments, 'comments' ); ?> /> <label for="cptm_supports_comments"><?php _e( 'Comments', 'cptm' ); ?></label><br />
+					<input type="checkbox" tabindex="25" name="cptm_supports[]" id="cptm_supports_revisions" value="revisions" <?php checked( $cptm_supports_revisions, 'revisions' ); ?> /> <label for="cptm_supports_revisions"><?php _e( 'Revisions', 'cptm' ); ?></label><br />
+					<input type="checkbox" tabindex="26" name="cptm_supports[]" id="cptm_supports_featured_image" value="thumbnail" <?php checked( $cptm_supports_featured_image, 'thumbnail' ); ?> /> <label for="cptm_supports_featured_image"><?php _e( 'Featured Image', 'cptm' ); ?></label><br />
+					<input type="checkbox" tabindex="27" name="cptm_supports[]" id="cptm_supports_author" value="author" <?php checked( $cptm_supports_author, 'author' ); ?> /> <label for="cptm_supports_author"><?php _e( 'Author', 'cptm' ); ?></label><br />
+					<input type="checkbox" tabindex="28" name="cptm_supports[]" id="cptm_supports_page_attributes" value="page-attributes" <?php checked( $cptm_supports_page_attributes, 'page-attributes' ); ?> /> <label for="cptm_supports_page_attributes"><?php _e( 'Page Attributes', 'cptm' ); ?></label><br />
+					<input type="checkbox" tabindex="29" name="cptm_supports[]" id="cptm_supports_post_formats" value="post-formats" <?php checked( $cptm_supports_post_formats, 'post-formats' ); ?> /> <label for="cptm_supports_post_formats"><?php _e( 'Post Formats', 'cptm' ); ?></label><br />
 				</td>
 			</tr>
 			<tr>
@@ -588,8 +640,8 @@ class Cptm {
 					<p><?php _e( '', 'cptm' ); ?></p>
 				</td>
 				<td>
-					<input type="checkbox" tabindex="27" name="cptm_builtin_taxonomies[]" id="cptm_builtin_taxonomies_categories" value="category" <?php checked( $cptm_builtin_taxonomies_categories, 'category' ); ?> /> <label for="cptm_builtin_taxonomies_categories"><?php _e( 'Categories', 'cptm' ); ?></label><br />
-					<input type="checkbox" tabindex="28" name="cptm_builtin_taxonomies[]" id="cptm_builtin_taxonomies_tags" value="post_tag" <?php checked( $cptm_builtin_taxonomies_tags, 'post_tag' ); ?> /> <label for="cptm_builtin_taxonomies_tags"><?php _e( 'Tags', 'cptm' ); ?></label><br />
+					<input type="checkbox" tabindex="30" name="cptm_builtin_taxonomies[]" id="cptm_builtin_taxonomies_categories" value="category" <?php checked( $cptm_builtin_taxonomies_categories, 'category' ); ?> /> <label for="cptm_builtin_taxonomies_categories"><?php _e( 'Categories', 'cptm' ); ?></label><br />
+					<input type="checkbox" tabindex="31" name="cptm_builtin_taxonomies[]" id="cptm_builtin_taxonomies_tags" value="post_tag" <?php checked( $cptm_builtin_taxonomies_tags, 'post_tag' ); ?> /> <label for="cptm_builtin_taxonomies_tags"><?php _e( 'Tags', 'cptm' ); ?></label><br />
 				</td>
 			</tr>
 		</table>
@@ -795,6 +847,15 @@ class Cptm {
 		if( isset( $_POST['cptm_rewrite'] ) )
 			update_post_meta( $post_id, 'cptm_rewrite', esc_attr( $_POST['cptm_rewrite'] ) );
 
+		if( isset( $_POST['cptm_withfront'] ) )
+			update_post_meta( $post_id, 'cptm_withfront', esc_attr( $_POST['cptm_withfront'] ) );
+
+		if( isset( $_POST['cptm_feeds'] ) )
+			update_post_meta( $post_id, 'cptm_feeds', esc_attr( $_POST['cptm_feeds'] ) );
+
+		if( isset( $_POST['cptm_pages'] ) )
+			update_post_meta( $post_id, 'cptm_pages', esc_attr( $_POST['cptm_pages'] ) );
+
 		if( isset($_POST['cptm_custom_rewrite_slug']) )
 			update_post_meta( $post_id, 'cptm_custom_rewrite_slug', sanitize_text_field( $_POST['cptm_custom_rewrite_slug'] ) );
 
@@ -937,6 +998,9 @@ class Cptm {
 					<ul class="right">
 						<li><a href="http://wordpress.org/extend/plugins/custom-post-type-maker/" target="_blank"><?php _e( 'Vote', 'cptm' ); ?></a></li>
 					</ul>
+				</div>
+				<div class="donate">
+					<p><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=AY28ZE6Y5LQLU&lc=GB&item_name=Wordpress%20Custom%20Post%20Type%20Maker&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHosted" target="_blank"><img src="https://www.paypalobjects.com/en_GB/i/btn/btn_donate_LG.gif" /></a></p>
 				</div>
 			</div>
 		</div>

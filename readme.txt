@@ -3,7 +3,7 @@ Contributors: jornbakhuys
 Tags: custom, post, type, custom post type, custom post types, maker, make, cpt, post types, taxonomy, taxonomies, tax, custom taxonomies
 Requires at least: 3.0.0
 Tested up to: 3.5.1
-Stable tag: 0.0.6
+Stable tag: 0.0.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -48,6 +48,14 @@ Please ask this question in the [Support Forums](http://wordpress.org/support/pl
 3. Creating custom Taxonomies
 
 == Changelog ==
+
+= 0.0.7 =
+* [Added] Custom Post Type now supports rewrite 'with_front'
+* [Added] Custom Post Type now supports rewrite 'feeds'
+* [Added] Custom Post Type now supports rewrite 'pages'
+* [Added] Flush permalink structure after creating Custom Post Types and custom Taxonomies
+* [Added] Plugin icons
+* [Added] Donation button
 
 = 0.0.6 =
 * [Added] Add tabindex for metaboxes
