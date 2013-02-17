@@ -7,6 +7,10 @@ div#minor-publishing-actions, div#visibility, div.curtime {
 	display: none;
 }
 
+#icon-edit {
+	background: url(../img/cptm-icon-32.png) 0 0 no-repeat;
+}
+
 /* meta_box */
 div#cptm_options div.inside, div#cptm_tax_options div.inside {
 	padding: 0;
