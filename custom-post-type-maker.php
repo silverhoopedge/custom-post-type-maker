@@ -4,7 +4,7 @@ Plugin Name: Custom Post Type Maker
 Plugin URI: http://www.bakhuys.com/wordpress/plugin/custom-post-type-maker/
 Description: Custom Post Type Maker lets you create Custom Post Types and custom Taxonomies in a user friendly way.
 Author: Jorn Bakhuys
-Version: 0.0.7
+Version: 0.0.8
 Author URI: http://www.bakhuys.com/
 */
 
@@ -23,7 +23,7 @@ class Cptm {
 		// vars
 		$this->dir = plugins_url( '', __FILE__ );
 		$this->path = plugin_dir_path( __FILE__ );
-		$this->version = '0.0.7';
+		$this->version = '0.0.8';
 
 		// actions
 		add_action( 'init', array($this, 'init') );
@@ -108,6 +108,11 @@ class Cptm {
 			'show_in_menu' => false,
 		));
 
+		// Add image size for the Custom Post Type icon
+		if ( function_exists( 'add_image_size' ) ) { 
+			add_image_size( 'cptm_icon', 16, 16, true );
+		}
+
 	} // # function init()
 
 	public function cptm_admin_menu() {
@@ -136,6 +141,12 @@ class Cptm {
 		if ( ( $hook == 'post-new.php' && isset($_GET['post_type']) && $_GET['post_type'] == 'cptm' ) || ( $hook == 'post.php' && isset($_GET['post']) && get_post_type( $_GET['post'] ) == 'cptm' ) || ( $hook == 'post-new.php' && isset($_GET['post_type']) && $_GET['post_type'] == 'cptm_tax' ) || ( $hook == 'post.php' && isset($_GET['post']) && get_post_type( $_GET['post'] ) == 'cptm_tax' ) ) {
 			wp_register_style( 'cptm_add_edit_styles', $this->dir . '/css/add-edit.css' );
 			wp_enqueue_style( 'cptm_add_edit_styles' );
+
+			wp_register_script( 'cptm_admin__add_edit_js', $this->dir . '/js/add-edit.js', 'jquery', '0.0.1', true );
+			wp_enqueue_script( 'cptm_admin__add_edit_js' );
+
+			wp_enqueue_script( array( 'jquery', 'thickbox', 'media-upload' ) );
+			wp_enqueue_style('thickbox');
 		}
 		
 	} // # function cptm_styles()
@@ -165,6 +176,7 @@ class Cptm {
 				$cptm_label               = ( array_key_exists( 'cptm_label', $cptm_meta ) && $cptm_meta['cptm_label'][0] ? esc_html( $cptm_meta['cptm_label'][0] ) : $cptm_name );
 				$cptm_singular_name       = ( array_key_exists( 'cptm_singular_name', $cptm_meta ) && $cptm_meta['cptm_singular_name'][0] ? esc_html( $cptm_meta['cptm_singular_name'][0] ) : $cptm_label );
 				$cptm_description         = ( array_key_exists( 'cptm_description', $cptm_meta ) && $cptm_meta['cptm_description'][0] ? $cptm_meta['cptm_description'][0] : '' );
+				$cptm_icon                = ( array_key_exists( 'cptm_icon', $cptm_meta ) && $cptm_meta['cptm_icon'][0] ? $cptm_meta['cptm_icon'][0] : false );
 				$cptm_custom_rewrite_slug = ( array_key_exists( 'cptm_custom_rewrite_slug', $cptm_meta ) && $cptm_meta['cptm_custom_rewrite_slug'][0] ? esc_html( $cptm_meta['cptm_custom_rewrite_slug'][0] ) : $cptm_name );
 				$cptm_menu_position       = ( array_key_exists( 'cptm_menu_position', $cptm_meta ) && $cptm_meta['cptm_menu_position'][0] ? (int) $cptm_meta['cptm_menu_position'][0] : null );
 
@@ -198,6 +210,7 @@ class Cptm {
 					'cptm_label'               => $cptm_label,
 					'cptm_singular_name'       => $cptm_singular_name,
 					'cptm_description'         => $cptm_description,
+					'cptm_icon'                => $cptm_icon,
 					'cptm_custom_rewrite_slug' => $cptm_custom_rewrite_slug,
 					'cptm_menu_position'       => $cptm_menu_position,
 					'cptm_public'              => (bool) $cptm_public,
@@ -233,6 +246,7 @@ class Cptm {
 						$args = array(
 							'labels'              => $labels,
 							'description'         => $cptm_post_type['cptm_description'],
+							'menu_icon'           => $cptm_post_type['cptm_icon'],
 							'rewrite'             => $cptm_post_type['cptm_rewrite'],
 							'menu_position'       => $cptm_post_type['cptm_menu_position'],
 							'public'              => $cptm_post_type['cptm_public'],
@@ -374,6 +388,7 @@ class Cptm {
 		$cptm_label                         = isset( $values['cptm_label'] ) ? esc_attr( $values['cptm_label'][0] ) : '';
 		$cptm_singular_name                 = isset( $values['cptm_singular_name'] ) ? esc_attr( $values['cptm_singular_name'][0] ) : '';
 		$cptm_description                   = isset( $values['cptm_description'] ) ? esc_attr( $values['cptm_description'][0] ) : '';
+		$cptm_icon                          = isset( $values['cptm_icon'] ) ? esc_attr( $values['cptm_icon'][0] ) : '';
 		$cptm_custom_rewrite_slug           = isset( $values['cptm_custom_rewrite_slug'] ) ? esc_attr( $values['cptm_custom_rewrite_slug'][0] ) : '';
 		$cptm_menu_position                 = isset( $values['cptm_menu_position'] ) ? esc_attr( $values['cptm_menu_position'][0] ) : '';
 
@@ -410,7 +425,13 @@ class Cptm {
 		$cptm_builtin_taxonomies_tags       = ( isset( $values['cptm_builtin_taxonomies'] ) && in_array( 'post_tag', $cptm_builtin_taxonomies ) ? 'post_tag' : '' );
 
 		// nonce
-		wp_nonce_field( 'cptm_meta_box_nonce_action', 'cptm_meta_box_nonce_field' ); 
+		wp_nonce_field( 'cptm_meta_box_nonce_action', 'cptm_meta_box_nonce_field' );
+
+		// set defaults if new Custom Post Type is being created
+		global $pagenow;
+		$cptm_supports_title                = $pagenow === 'post-new.php' ? 'title' : '';
+		$cptm_supports_editor               = $pagenow === 'post-new.php' ? 'editor' : '';
+		$cptm_supports_excerpt              = $pagenow === 'post-new.php' ? 'excerpt' : '';
 		?>
 		<table class="cptm">
 			<tr>
@@ -453,6 +474,11 @@ class Cptm {
 				</td>
 			</tr>
 			<tr>
+				<td colspan="2" class="section">
+					<h3><?php _e( 'Visibility', 'cptm' ); ?></h3>
+				</td>
+			</tr>
+			<tr>
 				<td class="label">
 					<label for="cptm_public"><?php _e( 'Public', 'cptm' ); ?></label>
 					<p><?php _e( 'Whether a post type is intended to be used publicly either via the admin interface or by front-end users.', 'cptm' ); ?></p>
@@ -465,63 +491,8 @@ class Cptm {
 				</td>
 			</tr>
 			<tr>
-				<td class="label">
-					<label for="cptm_show_ui"><?php _e( 'Show UI', 'cptm' ); ?></label>
-					<p><?php _e( 'Whether to generate a default UI for managing this post type in the admin.', 'cptm' ); ?></p>
-				</td>
-				<td>
-					<select name="cptm_show_ui" id="cptm_show_ui" tabindex="6">
-						<option value="1" <?php selected( $cptm_show_ui, '1' ); ?>><?php _e( 'True', 'cptm' ); ?> (<?php _e( 'default', 'cptm' ); ?>)</option>
-						<option value="0" <?php selected( $cptm_show_ui, '0' ); ?>><?php _e( 'False', 'cptm' ); ?></option>
-					</select>
-				</td>
-			</tr>
-			<tr>
-				<td class="label">
-					<label for="cptm_has_archive"><?php _e( 'Has Archive', 'cptm' ); ?></label>
-					<p><?php _e( 'Enables post type archives.', 'cptm' ); ?></p>
-				</td>
-				<td>
-					<select name="cptm_has_archive" id="cptm_has_archive" tabindex="7">
-						<option value="0" <?php selected( $cptm_has_archive, '0' ); ?>><?php _e( 'False', 'cptm' ); ?> (<?php _e( 'default', 'cptm' ); ?>)</option>
-						<option value="1" <?php selected( $cptm_has_archive, '1' ); ?>><?php _e( 'True', 'cptm' ); ?></option>
-					</select>
-				</td>
-			</tr>
-			<tr>
-				<td class="label">
-					<label for="cptm_exclude_from_search"><?php _e( 'Exclude From Search', 'cptm' ); ?></label>
-					<p><?php _e( 'Whether to exclude posts with this post type from front end search results.', 'cptm' ); ?></p>
-				</td>
-				<td>
-					<select name="cptm_exclude_from_search" id="cptm_exclude_from_search" tabindex="8">
-						<option value="0" <?php selected( $cptm_exclude_from_search, '0' ); ?>><?php _e( 'False', 'cptm' ); ?> (<?php _e( 'default', 'cptm' ); ?>)</option>
-						<option value="1" <?php selected( $cptm_exclude_from_search, '1' ); ?>><?php _e( 'True', 'cptm' ); ?></option>
-					</select>
-				</td>
-			</tr>
-			<tr>
-				<td class="label">
-					<label for="cptm_capability_type"><?php _e( 'Capability Type', 'cptm' ); ?></label>
-					<p><?php _e( 'The post type to use to build the read, edit, and delete capabilities.', 'cptm' ); ?></p>
-				</td>
-				<td>
-					<select name="cptm_capability_type" id="cptm_capability_type" tabindex="9">
-						<option value="post" <?php selected( $cptm_capability_type, 'post' ); ?>><?php _e( 'Post', 'cptm' ); ?> (<?php _e( 'default', 'cptm' ); ?>)</option>
-						<option value="page" <?php selected( $cptm_capability_type, 'page' ); ?>><?php _e( 'Page', 'cptm' ); ?></option>
-					</select>
-				</td>
-			</tr>
-			<tr>
-				<td class="label">
-					<label for="cptm_hierarchical"><?php _e( 'Hierarchical', 'cptm' ); ?></label>
-					<p><?php _e( 'Whether the post type is hierarchical (e.g. page).', 'cptm' ); ?></p>
-				</td>
-				<td>
-					<select name="cptm_hierarchical" id="cptm_hierarchical" tabindex="10">
-						<option value="0" <?php selected( $cptm_hierarchical, '0' ); ?>><?php _e( 'False', 'cptm' ); ?> (<?php _e( 'default', 'cptm' ); ?>)</option>
-						<option value="1" <?php selected( $cptm_hierarchical, '1' ); ?>><?php _e( 'True', 'cptm' ); ?></option>
-					</select>
+				<td colspan="2" class="section">
+					<h3><?php _e( 'Rewrite Options', 'cptm' ); ?></h3>
 				</td>
 			</tr>
 			<tr>
@@ -530,7 +501,7 @@ class Cptm {
 					<p><?php _e( 'Triggers the handling of rewrites for this post type.', 'cptm' ); ?></p>
 				</td>
 				<td>
-					<select name="cptm_rewrite" id="cptm_rewrite" tabindex="11">
+					<select name="cptm_rewrite" id="cptm_rewrite" tabindex="6">
 						<option value="1" <?php selected( $cptm_rewrite, '1' ); ?>><?php _e( 'True', 'cptm' ); ?> (<?php _e( 'default', 'cptm' ); ?>)</option>
 						<option value="0" <?php selected( $cptm_rewrite, '0' ); ?>><?php _e( 'False', 'cptm' ); ?></option>
 					</select>
@@ -542,10 +513,25 @@ class Cptm {
 					<p><?php _e( 'Should the permastruct be prepended with the front base.', 'cptm' ); ?></p>
 				</td>
 				<td>
-					<select name="cptm_withfront" id="cptm_withfront" tabindex="12">
+					<select name="cptm_withfront" id="cptm_withfront" tabindex="7">
 						<option value="1" <?php selected( $cptm_withfront, '1' ); ?>><?php _e( 'True', 'cptm' ); ?> (<?php _e( 'default', 'cptm' ); ?>)</option>
 						<option value="0" <?php selected( $cptm_withfront, '0' ); ?>><?php _e( 'False', 'cptm' ); ?></option>
 					</select>
+				</td>
+			</tr>
+			<tr>
+				<td class="label">
+					<label for="cptm_custom_rewrite_slug"><?php _e( 'Custom Rewrite Slug', 'cptm' ); ?></label>
+					<p><?php _e( 'Customize the permastruct slug.', 'cptm' ); ?></p>
+					<p><?php _e( 'Default: [Custom Post Type Name]', 'cptm' ); ?></p>
+				</td>
+				<td>
+					<input type="text" name="cptm_custom_rewrite_slug" id="cptm_custom_rewrite_slug" class="widefat" tabindex="8" value="<?php echo $cptm_custom_rewrite_slug; ?>" />
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" class="section">
+					<h3><?php _e( 'Front-end Options', 'cptm' ); ?></h3>
 				</td>
 			</tr>
 			<tr>
@@ -554,7 +540,7 @@ class Cptm {
 					<p><?php _e( 'Should a feed permastruct be built for this post type. Defaults to "has_archive" value.', 'cptm' ); ?></p>
 				</td>
 				<td>
-					<select name="cptm_feeds" id="cptm_feeds" tabindex="13">
+					<select name="cptm_feeds" id="cptm_feeds" tabindex="9">
 						<option value="0" <?php selected( $cptm_feeds, '0' ); ?>><?php _e( 'False', 'cptm' ); ?> (<?php _e( 'default', 'cptm' ); ?>)</option>
 						<option value="1" <?php selected( $cptm_feeds, '1' ); ?>><?php _e( 'True', 'cptm' ); ?></option>
 					</select>
@@ -566,7 +552,7 @@ class Cptm {
 					<p><?php _e( 'Should the permastruct provide for pagination.', 'cptm' ); ?></p>
 				</td>
 				<td>
-					<select name="cptm_pages" id="cptm_pages" tabindex="14">
+					<select name="cptm_pages" id="cptm_pages" tabindex="10">
 						<option value="1" <?php selected( $cptm_pages, '1' ); ?>><?php _e( 'True', 'cptm' ); ?> (<?php _e( 'default', 'cptm' ); ?>)</option>
 						<option value="0" <?php selected( $cptm_pages, '0' ); ?>><?php _e( 'False', 'cptm' ); ?></option>
 					</select>
@@ -574,23 +560,42 @@ class Cptm {
 			</tr>
 			<tr>
 				<td class="label">
-					<label for="cptm_custom_rewrite_slug"><?php _e( 'Custom Rewrite Slug', 'cptm' ); ?></label>
-					<p><?php _e( 'Customize the permastruct slug.', 'cptm' ); ?></p>
-					<p><?php _e( 'Default: [Custom Post Type Name]', 'cptm' ); ?></p>
+					<label for="cptm_exclude_from_search"><?php _e( 'Exclude From Search', 'cptm' ); ?></label>
+					<p><?php _e( 'Whether to exclude posts with this post type from front end search results.', 'cptm' ); ?></p>
 				</td>
 				<td>
-					<input type="text" name="cptm_custom_rewrite_slug" id="cptm_custom_rewrite_slug" class="widefat" tabindex="15" value="<?php echo $cptm_custom_rewrite_slug; ?>" />
+					<select name="cptm_exclude_from_search" id="cptm_exclude_from_search" tabindex="11">
+						<option value="0" <?php selected( $cptm_exclude_from_search, '0' ); ?>><?php _e( 'False', 'cptm' ); ?> (<?php _e( 'default', 'cptm' ); ?>)</option>
+						<option value="1" <?php selected( $cptm_exclude_from_search, '1' ); ?>><?php _e( 'True', 'cptm' ); ?></option>
+					</select>
 				</td>
 			</tr>
 			<tr>
 				<td class="label">
-					<label for="cptm_query_var"><?php _e( 'Query Var', 'cptm' ); ?></label>
-					<p><?php _e( 'Sets the query_var key for this post type.', 'cptm' ); ?></p>
+					<label for="cptm_has_archive"><?php _e( 'Has Archive', 'cptm' ); ?></label>
+					<p><?php _e( 'Enables post type archives.', 'cptm' ); ?></p>
 				</td>
 				<td>
-					<select name="cptm_query_var" id="cptm_query_var" tabindex="16">
-						<option value="1" <?php selected( $cptm_query_var, '1' ); ?>><?php _e( 'True', 'cptm' ); ?> (<?php _e( 'default', 'cptm' ); ?>)</option>
-						<option value="0" <?php selected( $cptm_query_var, '0' ); ?>><?php _e( 'False', 'cptm' ); ?></option>
+					<select name="cptm_has_archive" id="cptm_has_archive" tabindex="12">
+						<option value="0" <?php selected( $cptm_has_archive, '0' ); ?>><?php _e( 'False', 'cptm' ); ?> (<?php _e( 'default', 'cptm' ); ?>)</option>
+						<option value="1" <?php selected( $cptm_has_archive, '1' ); ?>><?php _e( 'True', 'cptm' ); ?></option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" class="section">
+					<h3><?php _e( 'Admin Menu Options', 'cptm' ); ?></h3>
+				</td>
+			</tr>
+			<tr>
+				<td class="label">
+					<label for="cptm_show_ui"><?php _e( 'Show UI', 'cptm' ); ?></label>
+					<p><?php _e( 'Whether to generate a default UI for managing this post type in the admin.', 'cptm' ); ?></p>
+				</td>
+				<td>
+					<select name="cptm_show_ui" id="cptm_show_ui" tabindex="13">
+						<option value="1" <?php selected( $cptm_show_ui, '1' ); ?>><?php _e( 'True', 'cptm' ); ?> (<?php _e( 'default', 'cptm' ); ?>)</option>
+						<option value="0" <?php selected( $cptm_show_ui, '0' ); ?>><?php _e( 'False', 'cptm' ); ?></option>
 					</select>
 				</td>
 			</tr>
@@ -600,7 +605,7 @@ class Cptm {
 					<p><?php _e( 'The position in the menu order the post type should appear. "Show in Menu" must be true.', 'cptm' ); ?></p>
 				</td>
 				<td>
-					<input type="text" name="cptm_menu_position" id="cptm_menu_position" class="widefat" tabindex="17" value="<?php echo $cptm_menu_position; ?>" />
+					<input type="text" name="cptm_menu_position" id="cptm_menu_position" class="widefat" tabindex="14" value="<?php echo $cptm_menu_position; ?>" />
 				</td>
 			</tr>
 			<tr>
@@ -609,9 +614,63 @@ class Cptm {
 					<p><?php _e( 'Where to show the post type in the admin menu. "Show UI" must be true.', 'cptm' ); ?></p>
 				</td>
 				<td>
-					<select name="cptm_show_in_menu" id="cptm_show_in_menu" tabindex="18">
+					<select name="cptm_show_in_menu" id="cptm_show_in_menu" tabindex="15">
 						<option value="1" <?php selected( $cptm_show_in_menu, '1' ); ?>><?php _e( 'True', 'cptm' ); ?> (<?php _e( 'default', 'cptm' ); ?>)</option>
 						<option value="0" <?php selected( $cptm_show_in_menu, '0' ); ?>><?php _e( 'False', 'cptm' ); ?></option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td class="label">
+					<label for="cptm_menu_position"><?php _e( 'Icon', 'cptm' ); ?></label>
+				</td>
+				<td>
+					<div class="cptm-icon">
+						<div class="current-cptm-icon"><?php if ( $cptm_icon ) { ?><img src="<?php echo $cptm_icon; ?>" /><?php } ?></div>
+						<a href="/" class="remove-cptm-icon button-secondary"<?php if ( ! $cptm_icon ) { ?> style="display: none;"<?php } ?>>Remove icon</a>
+						<a  href="/"class="media-uploader-button button-primary" data-post-id="<?php echo $post->ID; ?>"><?php if ( ! $cptm_icon ) { ?><?php _e( 'Add icon', 'cptm' ); ?><?php } else { ?><?php _e( 'Edit icon', 'cptm' ); ?><?php } ?></a>
+					</div>
+					<input type="hidden" name="cptm_icon" id="cptm_icon" class="widefat" value="<?php echo $cptm_icon; ?>" />
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" class="section">
+					<h3><?php _e( 'Wordpress Integration', 'cptm' ); ?></h3>
+				</td>
+			</tr>
+			<tr>
+				<td class="label">
+					<label for="cptm_capability_type"><?php _e( 'Capability Type', 'cptm' ); ?></label>
+					<p><?php _e( 'The post type to use to build the read, edit, and delete capabilities.', 'cptm' ); ?></p>
+				</td>
+				<td>
+					<select name="cptm_capability_type" id="cptm_capability_type" tabindex="16">
+						<option value="post" <?php selected( $cptm_capability_type, 'post' ); ?>><?php _e( 'Post', 'cptm' ); ?> (<?php _e( 'default', 'cptm' ); ?>)</option>
+						<option value="page" <?php selected( $cptm_capability_type, 'page' ); ?>><?php _e( 'Page', 'cptm' ); ?></option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td class="label">
+					<label for="cptm_hierarchical"><?php _e( 'Hierarchical', 'cptm' ); ?></label>
+					<p><?php _e( 'Whether the post type is hierarchical (e.g. page).', 'cptm' ); ?></p>
+				</td>
+				<td>
+					<select name="cptm_hierarchical" id="cptm_hierarchical" tabindex="17">
+						<option value="0" <?php selected( $cptm_hierarchical, '0' ); ?>><?php _e( 'False', 'cptm' ); ?> (<?php _e( 'default', 'cptm' ); ?>)</option>
+						<option value="1" <?php selected( $cptm_hierarchical, '1' ); ?>><?php _e( 'True', 'cptm' ); ?></option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td class="label">
+					<label for="cptm_query_var"><?php _e( 'Query Var', 'cptm' ); ?></label>
+					<p><?php _e( 'Sets the query_var key for this post type.', 'cptm' ); ?></p>
+				</td>
+				<td>
+					<select name="cptm_query_var" id="cptm_query_var" tabindex="18">
+						<option value="1" <?php selected( $cptm_query_var, '1' ); ?>><?php _e( 'True', 'cptm' ); ?> (<?php _e( 'default', 'cptm' ); ?>)</option>
+						<option value="0" <?php selected( $cptm_query_var, '0' ); ?>><?php _e( 'False', 'cptm' ); ?></option>
 					</select>
 				</td>
 			</tr>
@@ -686,7 +745,7 @@ class Cptm {
 		$cptm_tax_post_types_page               = ( isset( $values['cptm_tax_post_types'] ) && in_array( 'page', $cptm_tax_post_types ) ? 'page' : '' );
 
 		// nonce
-		wp_nonce_field( 'cptm_meta_box_nonce_action', 'cptm_meta_box_nonce_field' ); 
+		wp_nonce_field( 'cptm_meta_box_nonce_action', 'cptm_meta_box_nonce_field' );
 		?>
 		<table class="cptm">
 			<tr>
@@ -825,6 +884,9 @@ class Cptm {
 
 		if( isset($_POST['cptm_description']) )
 			update_post_meta( $post_id, 'cptm_description', esc_textarea( $_POST['cptm_description'] ) );
+
+		if( isset($_POST['cptm_icon']) )
+			update_post_meta( $post_id, 'cptm_icon', esc_textarea( $_POST['cptm_icon'] ) );
 
 		if( isset( $_POST['cptm_public'] ) )
 			update_post_meta( $post_id, 'cptm_public', esc_attr( $_POST['cptm_public'] ) );

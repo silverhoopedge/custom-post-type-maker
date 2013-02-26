@@ -3,7 +3,7 @@ Contributors: jornbakhuys
 Tags: custom, post, type, custom post type, custom post types, maker, make, cpt, post types, taxonomy, taxonomies, tax, custom taxonomies
 Requires at least: 3.0.0
 Tested up to: 3.5.1
-Stable tag: 0.0.7
+Stable tag: 0.0.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -19,6 +19,7 @@ Custom Post Type Maker is the perfect plugin to create Custom Post Types and cus
 * Provides an interface to manage your Custom Post Types, just like managing your regular posts and pages
 * Provides almost all the parameters of the WordPress CPT API
 * Shows you a list of all other registered Custom Post Types and custom Taxonomies in Wordpress
+* Uses the WordPress Media Uploader to let you manage the Custom Post Type icon
 
 = Bug Submission and Forum Support =
 [Support Forums](http://wordpress.org/support/plugin/custom-post-type-maker)
@@ -48,6 +49,12 @@ Please ask this question in the [Support Forums](http://wordpress.org/support/pl
 3. Creating custom Taxonomies
 
 == Changelog ==
+
+= 0.0.8 =
+* [Added] Custom Post Type icon support (currently uses the WordPress 3.5+ Media Uploader)
+* [Updated] Custom Post Type settings are now divided in sections
+* [Added] Set defaults for Supports if a new Custom Post Type is created
+* [Deleted] Temporary removed the Dutch translation to speed up the development process 
 
 = 0.0.7 =
 * [Added] Custom Post Type now supports rewrite 'with_front'
@@ -80,3 +87,8 @@ Please ask this question in the [Support Forums](http://wordpress.org/support/pl
 
 = 0.0.1 =
 * First release of the plugin 'Custom Post Type Maker'
+
+== Upgrade Notice ==
+
+= 0.0.8 =
+This version now supports the Custom Post Type icon. This only works in WordPress 3.5+ as the WordPress 3.5 Media Uploader is being used.
