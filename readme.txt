@@ -3,7 +3,7 @@ Contributors: jornbakhuys
 Tags: custom, post, type, custom post type, custom post types, maker, make, cpt, post types, taxonomy, taxonomies, tax, custom taxonomies
 Requires at least: 3.0.0
 Tested up to: 3.5.1
-Stable tag: 0.0.8
+Stable tag: 0.0.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -50,6 +50,9 @@ Please ask this question in the [Support Forums](http://wordpress.org/support/pl
 
 == Changelog ==
 
+= 0.0.9 =
+* [Bugfix] Custom Post Type icon now works if you icon is 16x16 or smaller when uploaded
+
 = 0.0.8 =
 * [Added] Custom Post Type icon support (currently uses the WordPress 3.5+ Media Uploader)
 * [Updated] Custom Post Type settings are now divided in sections
@@ -89,6 +92,9 @@ Please ask this question in the [Support Forums](http://wordpress.org/support/pl
 * First release of the plugin 'Custom Post Type Maker'
 
 == Upgrade Notice ==
+
+= 0.0.9 =
+This version includes a quick fix for a minor bug in version 0.0.8.
 
 = 0.0.8 =
 This version now supports the Custom Post Type icon. This only works in WordPress 3.5+ as the WordPress 3.5 Media Uploader is being used.

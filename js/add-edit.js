@@ -8,6 +8,7 @@
 			file_frame.open();
 			return;
 		}
+
 		file_frame = wp.media.frames.file_frame = wp.media({
 			title: 'Add Icon',
 			button: {
@@ -15,16 +16,22 @@
 			},
 			multiple: false
 		});
+
 		file_frame.on( 'select', function() {
 			attachment = file_frame.state().get('selection').first().toJSON();
-			console.log(attachment);
-			var url = attachment.sizes.cptm_icon.url;
+			// console.log(attachment);
+			if ( attachment.sizes.cptm_icon ) {
+				var url = attachment.sizes.cptm_icon.url;
+			} else {
+				var url = attachment.url;
+			}
 			jQuery('#cptm_icon').val( url );
 			jQuery('.current-cptm-icon').html('<img src="'+url+'" height="16" width="16" />');
 			jQuery('.remove-cptm-icon').show();
 			jQuery('.media-uploader-button').html('Edit icon');
 		});
-		file_frame.open( );
+
+		file_frame.open();
 		return false;
 	});
 
