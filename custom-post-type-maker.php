@@ -4,7 +4,7 @@ Plugin Name: Custom Post Type Maker
 Plugin URI: http://www.bakhuys.com/wordpress/plugin/custom-post-type-maker/
 Description: Custom Post Type Maker lets you create Custom Post Types and custom Taxonomies in a user friendly way.
 Author: Jorn Bakhuys
-Version: 0.1.0
+Version: 0.1.1
 Author URI: http://www.bakhuys.com/
 */
 
@@ -23,7 +23,7 @@ class Cptm {
 		// vars
 		$this->dir = plugins_url( '', __FILE__ );
 		$this->path = plugin_dir_path( __FILE__ );
-		$this->version = '0.1.0';
+		$this->version = '0.1.1';
 
 		// actions
 		add_action( 'init', array($this, 'init') );
@@ -35,6 +35,7 @@ class Cptm {
 		add_action( 'manage_posts_custom_column', array($this, 'cptm_custom_columns'), 10, 2 );
 		add_action( 'manage_posts_custom_column', array($this, 'cptm_tax_custom_columns'), 10, 2 );
 		add_action( 'admin_footer', array($this,'cptm_admin_footer') );
+		add_action( 'wp_prepare_attachment_for_js', array($this, 'wp_prepare_attachment_for_js'), 10, 3 );
 
 		// filters
 		add_filter( 'manage_cptm_posts_columns', array($this, 'cptm_change_columns') );
@@ -145,8 +146,7 @@ class Cptm {
 			wp_register_script( 'cptm_admin__add_edit_js', $this->dir . '/js/add-edit.js', 'jquery', '0.0.1', true );
 			wp_enqueue_script( 'cptm_admin__add_edit_js' );
 
-			wp_enqueue_script( array( 'jquery', 'thickbox', 'media-upload' ) );
-			wp_enqueue_style('thickbox');
+			wp_enqueue_media();
 		}
 		
 	} // # function cptm_styles()
@@ -1285,5 +1285,36 @@ class Cptm {
 		return $messages;
 
 	} // # function cptm_post_updated_messages()
+
+	function wp_prepare_attachment_for_js( $response, $attachment, $meta )
+	{
+		// only for image
+		if( $response['type'] != 'image' )
+		{
+			return $response;
+		}
+		
+		
+		$attachment_url = $response['url'];
+		$base_url = str_replace( wp_basename( $attachment_url ), '', $attachment_url );
+		
+		if( is_array($meta['sizes']) )
+		{
+			foreach( $meta['sizes'] as $k => $v )
+			{
+				if( !isset($response['sizes'][ $k ]) )
+				{
+					$response['sizes'][ $k ] = array(
+						'height'      =>  $v['height'],
+						'width'       =>  $v['width'],
+						'url'         => $base_url .  $v['file'],
+						'orientation' => $v['height'] > $v['width'] ? 'portrait' : 'landscape',
+					);
+				}
+			}
+		}
+
+		return $response;
+	} // # function wp_prepare_attachment_for_js()
 
 }

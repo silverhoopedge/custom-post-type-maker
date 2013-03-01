@@ -3,7 +3,7 @@ Contributors: jornbakhuys
 Tags: custom, post, type, custom post type, custom post types, maker, make, cpt, post types, taxonomy, taxonomies, tax, custom taxonomies
 Requires at least: 3.0.0
 Tested up to: 3.5.1
-Stable tag: 0.1.0
+Stable tag: 0.1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -49,6 +49,10 @@ Please ask this question in the [Support Forums](http://wordpress.org/support/pl
 3. Creating custom Taxonomies
 
 == Changelog ==
+
+= 0.1.1 =
+* [Bugfix] Fixes a JavaScript bug that prevented the Media Uploader pop-op to open
+* [Bugfix] add_image_size will now but used for the uploaded icon
 
 = 0.1.0 =
 * [Bugfix] Fixes default checked checkboxes for the Supports section where checkboxes where not checked on the edit page
