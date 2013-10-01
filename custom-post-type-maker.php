@@ -4,7 +4,7 @@ Plugin Name: Custom Post Type Maker
 Plugin URI: http://www.bakhuys.com/wordpress/plugin/custom-post-type-maker/
 Description: Custom Post Type Maker lets you create Custom Post Types and custom Taxonomies in a user friendly way.
 Author: Jorn Bakhuys
-Version: 0.1.2
+Version: 0.1.3
 Author URI: http://www.bakhuys.com/
 */
 
@@ -23,7 +23,7 @@ class Cptm {
 		// vars
 		$this->dir = plugins_url( '', __FILE__ );
 		$this->path = plugin_dir_path( __FILE__ );
-		$this->version = '0.1.2';
+		$this->version = '0.1.3';
 
 		// actions
 		add_action( 'init', array($this, 'init') );
