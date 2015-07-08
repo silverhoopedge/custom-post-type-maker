@@ -362,7 +362,7 @@ class Cptm {
 							'update_item'                => __( 'Update ' . $cptm_taxonomy['cptm_tax_singular_name'], 'custom-post-type-maker' ),
 							'add_new_item'               => __( 'Add New ' . $cptm_taxonomy['cptm_tax_singular_name'], 'custom-post-type-maker' ),
 							'new_item_name'              => __( 'New ' . $cptm_taxonomy['cptm_tax_singular_name'], 'custom-post-type-maker' . ' Name' ),
-							'separate_items_with_commas' => __( 'Seperate ' . $cptm_taxonomy['cptm_tax_label'], 'custom-post-type-maker' . ' with commas' ),
+							'separate_items_with_commas' => __( 'Use commas to separate ' . $cptm_taxonomy['cptm_tax_label'], 'custom-post-type-maker' . ' with commas' ),
 							'add_or_remove_items'        => __( 'Add or remove ' . $cptm_taxonomy['cptm_tax_label'], 'custom-post-type-maker' ),
 							'choose_from_most_used'      => __( 'Choose from the most used ' . $cptm_taxonomy['cptm_tax_label'], 'custom-post-type-maker' ),
 							'menu_name'                  => __( 'All ' . $cptm_taxonomy['cptm_tax_label'], 'custom-post-type-maker' )
