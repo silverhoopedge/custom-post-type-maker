@@ -785,7 +785,7 @@ class Cptm {
 			<tr>
 				<td class="label">
 					<label for="cptm_tax_name"><span class="required">*</span> <?php _e( 'Custom Taxonomy Name', 'custom-post-type-maker' ); ?></label>
-					<p><?php _e( 'The taxonomy name. Used to retrieve custom taxonomy content.', 'custom-post-type-maker' ); ?></p>
+					<p><?php _e( 'The taxonomy name. Used to retrieve custom taxonomy content. Must be all in lower-case and without any spaces.', 'custom-post-type-maker' ); ?></p>
 					<p><?php _e( 'e.g. movies', 'custom-post-type-maker' ); ?></p>
 				</td>
 				<td>
